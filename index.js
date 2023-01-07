@@ -11,11 +11,11 @@ app.use(bodyParser.urlencoded({extended:true}));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.get('/sign-up', function (req, res) {  
-   res.sendFile( __dirname + "/" + "login.html" );  
+   res.sendFile( __dirname + "/" + "register.html" );  
 })  
  
 app.get('/', function (req, res) {  
-   res.sendFile( __dirname + "/" + "404.html" );  
+   res.sendFile( __dirname + "/" + "login.html" );  
 })  
  
 /* route to handle login and registration */
