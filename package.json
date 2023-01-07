@@ -10,10 +10,7 @@
         "jsonwebtoken": "^7.3.0",
         "mysql": "^2.18.1"
     },
-    "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1",
-        "start":"node index.js"
-    },
+    "scripts": {},
     "author": "",
     "license": "ISC"
 }
