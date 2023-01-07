@@ -15,7 +15,7 @@ app.get('/sign-up', function (req, res) {
 })  
  
 app.get('/', function (req, res) {  
-   res.sendFile( __dirname + "/" + "login.html" );  
+   res.sendFile( __dirname + "/" + "404.html" );  
 })  
  
 /* route to handle login and registration */
