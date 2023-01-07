@@ -25,4 +25,8 @@ app.post('/api/authenticate',authenticateController.authenticate);
 console.log(authenticateController);
 app.post('/controllers/register-controller', registerController.register);
 app.post('/controllers/authenticate-controller', authenticateController.authenticate);
-app.listen(8012);
+
+// Export the Express API
+module.exports = app
+
+//app.listen(8012);
