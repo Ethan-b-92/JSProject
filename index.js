@@ -9,14 +9,19 @@ var registerController=require('./controllers/register-controller');
  
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.get('/sign-up', function (req, res) {  
-   res.sendFile( __dirname + "/" + "register.html" );  
-})  
+app.use(bodyParser.urlencoded({ extended: true })); 
  
 app.get('/', function (req, res) {  
    res.sendFile( __dirname + "/" + "login.html" );  
 })  
+
+app.get('/register', function (req, res) {  
+   res.sendFile( __dirname + "/" + "register.html" );  
+}) 
+
+app.get('/forgot-password', function (req, res) {  
+   res.sendFile( __dirname + "/" + "forgot-password.html" );  
+}) 
  
 /* route to handle login and registration */
 app.post('/api/register',registerController.register);
