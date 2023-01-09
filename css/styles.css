@@ -9,7 +9,7 @@ body {
 }
 
 #app-background-image {
-	background: url("images/galaxy2.png");
+	background: url("/css/images/galaxy2.png");
 }
 
 .main-container {
