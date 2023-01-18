@@ -1,6 +1,7 @@
 var express = require("express");
 var bodyParser = require('body-parser');
 const { MongoClient } = require('mongodb');
+const path = require('path');
 
 var app = express();
 
@@ -39,7 +40,7 @@ async function updateListingByUsername(client, nameOfListing, updatedListing) {
    console.log(`${result.matchedCount} document(s) matched the query criteria.`);
    console.log(`${result.modifiedCount} document(s) was/were updated.`);
 }
-const results = null;
+
 async function main() {
    /**
     * Connection URI. Update <username>, <password>, and <your-cluster-url> to reflect your cluster.
@@ -50,17 +51,21 @@ async function main() {
    try {
       await client.connect();
 
+      var firstRes;
       const cursor = await client.db("JSProject").collection("Users").find(
          {password : { $exists: true, $nin: ["12345","55442"]}});
       //cursor.sort({age : -1});
       //cursor.limit(2);
-      results = await cursor.toArray();
+      const results = await cursor.toArray();
       if (results.length == 0)
          console.log("no listings found.");
       results.forEach((result, i) => {
          console.log(result);
+         firstRes = result;
       });
-
+      await client.close();
+      return firstRes;
+      //console.log(s);
       //await client.db("JSProject").collection("Users").find($or [{ username: "Stav" }, {username: "Ethan"}]);
     
 
@@ -77,19 +82,15 @@ async function main() {
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.static('css'));
-
+app.use(express.static(path.join(__dirname, 'public')));
+console.log(main().catch(console.error));
 main().catch(console.error);
-
-app.get('/', (req, res) => {
-   res.send(results);
-})
-// app.get('/', (req, res) => {
-//    res.sendFile(__dirname + "/login.html");
-// })
+ app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname,'public', "login.html"));
+ })
 
 app.get('/register', function (req, res) {
-   res.sendFile(__dirname + "/" + "register.html");
+   res.sendFile(path.join(__dirname,'public', "register.html"));
 })
 
 app.get('/forgot-password', function (req, res) {
