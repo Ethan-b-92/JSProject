@@ -4,8 +4,22 @@ const { ensureAuthenticated } = require("../utils/authenticat");
 
 const Treatments = require("../models/treatmentScheme");
 
-router.get('/', (req, res) => {
+router.get('/', (req, res)=> {
     res.render('login');
+});
+
+router.get("/login", (req, res)=> {
+  res.render("login")
+});
+
+router.get("/register", (req, res)=>
+{ 
+  res.render("register")
+});
+
+router.get("/forget-password", (req, res)=> 
+{
+  res.render("forget-password")
 });
 
 router.post("/tables", ensureAuthenticated, (req, res) => {
