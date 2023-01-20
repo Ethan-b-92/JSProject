@@ -1,32 +1,33 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const { ensureAuthenticated } = require('../config/auth');
+const { ensureAuthenticated } = require("../utils/authenticat");
 
-const Treatment = require('../models/Treatment');
-const User = require('../models/User');
+const Treatments = require("../models/treatmentScheme");
 
-const path = require('path');
-// Welcome page
-router.get('/',(req, res)=>{
-    res.sendFile('login.html', {root: './public'});
+router.get('/', (req, res) => {
+    res.render('login');
 });
 
-router.get('/forgot-password',(req, res)=>{
-    res.sendFile('forgot-password.html', {root: './public'});
+router.post("/tables", ensureAuthenticated, (req, res) => {
+  Treatments.find({}, (err, treatments) => {
+    res.render('tables', {
+      treatmentList: treatments,
+    });
+  });
 });
 
-router.get('/register',(req, res)=>{
-    res.sendFile('register.html', {root: './public'});
+router.get('/aboutUs', ensureAuthenticated, (req, res)=>{ //******* */
+  res.render('aboutUs')
 });
 
-// Dashbord page
-router.get('/dashboard', ensureAuthenticated, (req, res)=>{
-    Treatment.find({}, (err, treatments) =>{
-        res.render('tables',{
-            treatmentList: treatments
-        })
-    })
-    
+router.get('/PageNotFound', (req, res)=>{
+  res.render('404');
 });
+
+// router.get("*", (req, res)=>
+// {
+//   res.render('404');
+// });
+
 
 module.exports = router;
