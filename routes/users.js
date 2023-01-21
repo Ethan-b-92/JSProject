@@ -23,13 +23,14 @@ router.get('/forget-password', (req, res)=>
 
 // Register handle
 router.post("/register", (req, res) => {
-  const { firstName, lastName, email, password } = req.body;
+  const { firstName, lastName, email, password , repassword} = req.body;
     User.findOne({ email: email })
       .then((user) => {
         if (user) //already exist
         {
-          req.flash('error_msg', 'This username already exists');
-          res.redirect('/users/register');
+          //req.flash('error_msg', 'This username already exists');
+          console.log('user exists');
+          //res.redirect('/users/register');
         } 
         else 
         {
@@ -47,8 +48,9 @@ router.post("/register", (req, res) => {
               newUser.password = hash;
               newUser.save()
                 .then((user) => {
-                  req.flash("success_msg", "You are now registered");
-                  res.redirect("/users/login");
+                  //req.flash("success_msg", "You are now registered");
+                  console.log('success');
+                  //res.redirect("/users/login");
                 })
                 .catch((err) => console.log(err));
             })
