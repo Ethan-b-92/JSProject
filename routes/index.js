@@ -22,7 +22,7 @@ router.get("/forget-password", (req, res)=>
   res.render("forget-password")
 });
 
-router.post("/tables", ensureAuthenticated, (req, res) => { //*************** */
+router.post("/tables", checkAuthenticated, (req, res) => { //*************** */
   Treatments.find({}, (err, treatments) => {
     res.render('tables', {
       treatmentList: treatments,
@@ -30,7 +30,7 @@ router.post("/tables", ensureAuthenticated, (req, res) => { //*************** */
   });
 });
 
-router.get('/aboutUs', ensureAuthenticated, (req, res)=>{ 
+router.get('/aboutUs', checkAuthenticated, (req, res)=>{ 
   res.render('aboutUs')
 });
 
@@ -43,5 +43,11 @@ router.get('/PageNotFound', (req, res)=>{
 //   res.render('404');
 // });
 
+function checkAuthenticated(req, res, next) {
+  if (req.isAuthenticated()) {
+    return next()
+  }
+  res.redirect('/login')
+}
 
 module.exports = router;

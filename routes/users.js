@@ -59,28 +59,30 @@ router.post("/register", async (req, res) => {
 });
 
 // Login handle
-router.post("/login", (req, res, next) => {
-  const res_key = req.body["g-recaptcha-response"];
-  const secret_key = "6Lc37tYjAAAAAIvA_p5mO6RbN-8Y0q2f6YNb2A6X";
-  const url = "https://www.google.com/recaptcha/api/siteverify?secret=" + secret_key + "&response=" + res_key + "&remoteip=" + req.socket.remoteAddress;
+router.post('/login', async (req, res) => {
+  if (req.body.captcha === undefined || req.body.captcha === '' || req.body.captcha === null) {
+     return res.json({ "success": false, "msg": "please select recaptcha" });
+  }
 
-  request(url, (err, response, body) => {
-    body = JSON.parse(body);
-    // If not success
-    //if (body.success !== undefined && !body.success) 
-    if(false){
-      //return res.json({"responseCode" : 1,"responseDesc" : "Failed captcha verification"});
-      res.redirect('/login');
-      console.log('failed');
-    }
-    else { // success
-      passport.authenticate("local", {
-        successRedirect: "/tables",
-        failureRedirect: "/login",
-        failureFlash: true,
-      })(req, res, next);
-      res.json({"responseCode" : 0,"responseDesc" : "Sucess"});
-    }
+  var secret_key = "6Lc37tYjAAAAAIvA_p5mO6RbN-8Y0q2f6YNb2A6X";
+  // var secret_key = "6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe";
+  var url = "https://www.google.com/recaptcha/api/siteverify?secret=" + secret_key + "&response=" + req.body.captcha + "&remoteip=" + req.connection.remoteAddress;
+
+  request(url, (error, response, body) => {
+     body = JSON.parse(body);
+
+     if (body.success !== undefined && !body.success) //unsuccessful
+     {
+        console.log("did'nt success");
+        res.redirect('/login');
+        return res.json({ "success": false, "msg": "failed captcha verification" });
+     }
+     passport.authenticate('local', {
+        successRedirect: '/tables',
+        failureRedirect: '/login',
+        failureFlash: true
+     })(req, res, next);
+     return res.json({ "success": true, "msg": "captcha passed" });
   });
 });
 

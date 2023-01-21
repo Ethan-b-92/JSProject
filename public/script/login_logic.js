@@ -24,8 +24,8 @@ function validateLogIn() {
         var email = document.getElementById("email").value;
         var password = document.getElementById("password").value;
         if(validateRecaptcha(email, password)) {
-            modalTitle = "Congrats!";
-            alert('You successfully logged into your account! \nEmail: ' + email +' \nPassword: ' + password);
+            //modalTitle = "Congrats!";
+            //alert('You successfully logged into your account! \nEmail: ' + email +' \nPassword: ' + password);
             submitForm();
         }
         
@@ -55,7 +55,6 @@ function validateEmail() {
 
 function validatePassword() {
     var password = document.getElementById("password").value;
-    //var passwordRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*\(\)-_=+\\|\[\]\{\}\;\:\?\.\>\<])(?=.{6,})");
     var passwordRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9])(?=.{6,})");
 
     return passwordRegex.test(password);
@@ -65,18 +64,12 @@ function validatePassword() {
 function setToolTips() {
     document.getElementById("password").title = passwordRules;
     document.getElementById("email").title = emailRules;
-    var confirm = document.getElementById("confirm");
-    if(confirm != null) {
-        confirm.title = "Passwords must match";
-        document.getElementById("firstName").title = "Name is required and must contain only English letters";
-        document.getElementById("lastName").title = "Name is required and must contain only English letters";
-    }
 }
 
 function submitForm(email, password) {
     var captcha = document.querySelector('#g-recaptcha-response').value;
 
-    fetch('/login', {
+    fetch('https://js-project-kohl.vercel.app/users/login', {
         method: 'POST',
         headers: { 
             'Accepts': 'application/json, text/plain. */*',
@@ -89,4 +82,16 @@ function submitForm(email, password) {
         console.log(data);
         alert(data.msg);
     });    
+}
+
+function validateRecaptcha()
+{
+    const resp = grecaptcha.getResponse();
+    if(resp.length == 0)
+    {
+        document.getElementById("captcha").innerHTML = "You can't leave Captcha Code empty!";
+        alert("You can't leave Captcha Code empty!");
+        return false;
+    }
+    return true;
 }
