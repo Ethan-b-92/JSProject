@@ -27,6 +27,6 @@ const TreatmentSchema = new mongoose.Schema({
   },
 });
 
-const Treatment = mongoose.model("Treatment", TreatmentSchema);
+const Treatment = mongoose.model("Treatments", TreatmentSchema);
 
 module.exports = Treatment;

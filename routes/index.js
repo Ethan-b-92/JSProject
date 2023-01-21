@@ -5,11 +5,11 @@ const { ensureAuthenticated } = require("../utils/authenticat");
 const Treatments = require("../models/treatmentScheme");
 
 router.get('/', (req, res)=> {
-    res.render('login');
+    res.render('login.ejs');
 });
 
 router.get("/login", (req, res)=> {
-  res.render("login")
+  res.render("login.ejs")
 });
 
 router.get("/register", (req, res)=>

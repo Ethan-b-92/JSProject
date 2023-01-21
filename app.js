@@ -2,6 +2,7 @@ var express = require("express");
 var bodyParser = require('body-parser');
 const mongoose = require("mongoose");
 const session = require("express-session");
+const flash = require('express-flash');
 const passport = require("passport");
 var path = require('path');
 
@@ -29,31 +30,16 @@ app.use(bodyParser.json());
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-
-// app.get('/', function (req, res) {  
-//    res.sendFile( __dirname + "/" + "login.html" );  
-// })  
-
-// app.get('/register', function (req, res) {  
-//    res.sendFile( __dirname + "/" + "register.html" );  
-// }) 
-
-// app.get('/forgot-password', function (req, res) {  
-//    res.sendFile( __dirname + "/" + "forgot-password.html" );  
-// }) 
-
-
 app.use("/", require("./routes/index"));
 app.use("/users", require("./routes/users"));
 app.use("/treatments", require("./routes/treatments"));
 
-
+app.use(flash());
 app.use(session({
    secret: 'secret',
-   resave: true,
-   saveUninitialized: true
+   resave: false,
+   saveUninitialized: false
 }));
-
 
 app.use(passport.initialize());
 app.use(passport.session());
