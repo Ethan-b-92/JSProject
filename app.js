@@ -5,6 +5,7 @@ const session = require("express-session");
 const flash = require('express-flash');
 const passport = require("passport");
 var path = require('path');
+const request = require('request');
 
 var app = express();
 
@@ -30,6 +31,25 @@ app.use(bodyParser.json());
 
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.post('/login', (req, res)=>
+{
+   if(req.body.captcha === undefined || req.body.captcha === '' || req.body.captcha === null) {
+      return res.json({"success": false, "msg": "please select recaptcha"});
+   }
+
+   var secret_key = "6Lc37tYjAAAAAIvA_p5mO6RbN-8Y0q2f6YNb2A6X";
+   var url = "https://www.google.com/recaptcha/api/siteverify?secret=" + secret_key + "&response=" + req.body.captcha + "&remoteip=" + req.connection.remoteAddress;
+
+   request(url, (error, response, body)=> {
+      body = JSON.parse(body);
+
+      if(body.success !== undefined && !body.success) //unsuccessful
+      {
+            return res.json({"success": false, "msg": "failed captcha verification"}); 
+      }
+      return res.json({"success": true, "msg": "captcha passed"});   
+   });
+});
 app.use("/", require("./routes/index"));
 app.use("/users", require("./routes/users"));
 app.use("/treatments", require("./routes/treatments"));
@@ -49,16 +69,7 @@ app.use(passport.session());
 //    res.status(404).redirect('/404');
 //  });
  
-/* route to handle login and registration */
-// app.post('/api/register',registerController.register);
-// app.post('/api/authenticate',authenticateController.authenticate);
- 
-// console.log(authenticateController);
-// app.post('/controllers/register-controller', registerController.register);
-// app.post('/controllers/authenticate-controller', authenticateController.authenticate);
 
-
-// Export the Express API
 module.exports = app;
 
 const PORT = 8012;

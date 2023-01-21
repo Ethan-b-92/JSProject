@@ -6,6 +6,27 @@ var modalTitle = "Modal Title";
 
 setToolTips();
 
+//document.getElementById('form').addEventListener('submit', submitForm);
+
+function submitForm(email, password) {
+    var captcha = document.querySelector('#g-recaptcha-response').value;
+
+    fetch('/login', {
+        method: 'POST',
+        headers: { 
+            'Accepts': 'application/json, text/plain. */*',
+            'Content-Type': 'application/json' 
+        },
+        body: JSON.stringify( { email: email, password: password, captcha: captcha })
+    })
+    .then((res)=> res.json)
+    .then((data)=> {
+        console.log(data);
+        alert(data.msg);
+    });    
+}
+
+
 (function() {
     var proxied = window.alert;
     window.alert = function() {
@@ -36,8 +57,50 @@ function validateLogIn() {
     if(emailValidation && passwordValidation) {
         var email = document.getElementById("email").value;
         var password = document.getElementById("password").value;
-        modalTitle = "Congrats!";
-        alert('You successfully logged into your account! \nEmail: ' + email +' \nPassword: ' + password);
+        if(validateRecaptcha(email, password)) {
+            modalTitle = "Congrats!";
+            alert('You successfully logged into your account! \nEmail: ' + email +' \nPassword: ' + password);
+            submitForm();
+        }
+        
+    }
+}
+
+function validateRecaptcha()
+{
+    const resp = grecaptcha.getResponse();
+    if(resp.length == 0)
+    {
+        document.getElementById("captcha").innerHTML = "You can't leave Captcha Code empty!";
+        alert("You can't leave Captcha Code empty!");
+        return false;
+    }
+    return true;
+}
+
+function successfulLogin()
+{
+    
+    const token = grecaptcha.getResponse();
+    grecaptcha.current.reset();
+
+    const reCAPTCHMsg = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(
+            {
+                title:     'reCAPTCHA',
+                token:     token
+            })
+        };
+        
+    console.log("requesting");
+
+    const reCaptchaResponse = fetch('/login', reCAPTCHMsg)
+    console.log(reCaptchaResponse);
+    if (!reCaptchaResponse.ok) {
+        alert('ReCAPTCHA verification failed');
+        return;
     }
 }
 

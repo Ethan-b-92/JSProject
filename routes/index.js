@@ -22,7 +22,7 @@ router.get("/forget-password", (req, res)=>
   res.render("forget-password")
 });
 
-router.post("/tables", ensureAuthenticated, (req, res) => {
+router.post("/tables", ensureAuthenticated, (req, res) => { //*************** */
   Treatments.find({}, (err, treatments) => {
     res.render('tables', {
       treatmentList: treatments,
@@ -30,7 +30,7 @@ router.post("/tables", ensureAuthenticated, (req, res) => {
   });
 });
 
-router.get('/aboutUs', ensureAuthenticated, (req, res)=>{ //******* */
+router.get('/aboutUs', ensureAuthenticated, (req, res)=>{ 
   res.render('aboutUs')
 });
 
