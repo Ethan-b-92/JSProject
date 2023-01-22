@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>About Us</title><!--****************************-->
+    <title>About Us</title>
 
     <!-- Custom fonts for this template -->
     <link href="css/all.min.css" rel="stylesheet" type="text/css">
@@ -36,7 +36,7 @@
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
             <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="tables.html">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/tables">
                 <div class="sidebar-brand-icon small">
                     <img src="css/images/car-maintenance-buddy-logo.png" width="55" height="40">
                 </div>
@@ -48,7 +48,7 @@
 
             <!-- Nav Item - Dashboard -->
             <li class="nav-item">
-                <a class="nav-link" href="tables.html">
+                <a class="nav-link" href="/tables">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Dashboard</span></a>
             </li>
@@ -92,7 +92,7 @@
 
             <!-- Nav Item - Tables -->
             <li class="nav-item active">
-                <a class="nav-link" href="about-us.html">
+                <a class="nav-link" href="/about-us">
                     <i class="fas fa-fw fa-address-card"></i>
                     <span>About Us</span></a>
             </li>
@@ -179,7 +179,7 @@
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                 aria-labelledby="userDropdown">
-                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                                <a class="dropdown-item" href="/logout" data-toggle="modal" data-target="#logoutModal">
                                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Logout
                                 </a>
@@ -206,7 +206,13 @@
                             <h6 class="m-0 font-weight-bold text-primary">About us</h6> <!--****************************-->
                         </div>
                         <div class="card-body">
-                            Our company is blablabla
+                            Our company is Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam faucibus mollis odio quis cursus. 
+                            Quisque vehicula, justo sit amet aliquam rutrum, libero odio mattis leo, quis bibendum ligula ex sit amet metus. 
+                            Donec ut nunc et justo pretium luctus ut et lorem. Nam orci quam, congue ut mauris eget, convallis sodales eros. 
+                            Morbi eleifend augue at porta varius. In condimentum condimentum nisl, quis bibendum orci ullamcorper volutpat. 
+                            Praesent rutrum velit vel ex faucibus, eget feugiat turpis maximus. Etiam facilisis erat a interdum dapibus. 
+                            Fusce ipsum odio, maximus at ultrices in, consectetur nec eros.
+                            Feel free to contact us!
                         </div>
                         <div class="card-header py-3">
                             <h6 class="m-0 font-weight-bold text-primary">Contact Us</h6> <!--****************************-->
@@ -247,7 +253,7 @@
                                             </div>                
                                         </form>
                                         <br>
-                                        <button type="button" class="btn btn-primary m-3"> Submit </button>
+                                        <button type="button" onclick="submitMessage()" class="btn btn-primary m-3"> Submit </button>
                                     </div>
                                     <div class="col">
                                         <div id="support" class="col">
@@ -343,6 +349,23 @@
 
     <!-- Page level custom scripts -->
     <script src="js/demo/datatables-demo.js"></script>
+
+    <script>
+        (function () {
+            var proxied = window.alert;
+            window.alert = function () {
+                modal = $('<div id="myModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"><div class="modal-dialog" role="document"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button><h4 id="myModalTitle" class="modal-title">Modal title</h4></div><div class="modal-body"><p>One fine body&hellip;</p></div><div class="modal-footer"><button type="button" class="btn btn-default" data-dismiss="modal">Close</button></div></div></div></div>');
+                modal.find(".modal-body").text(arguments[0]);
+                modal.find(".modal-title").text("We got your message!");
+                modal.modal('show');
+            };
+        })();
+
+        function submitMessage() {
+            alert("We will answer within 4 buisness days");
+        }
+
+    </script>
 
 </body>
 

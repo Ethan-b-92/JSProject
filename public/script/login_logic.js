@@ -2,7 +2,10 @@ const passwordRules = "Password must contain: \n1. At least one upper case lette
 2. At least one lower case letter \n3. At least one digit \n4. At least one special character\n\
 5. At least 6 characters\nSpecial characters: : ! @ # \$ % ^ & * ( ) - _ = + \ | [ ] { } ; : / ? . > \<";
 const emailRules = "Email field should match the format: aaa@bbb.ccc";
-var modalTitle = "Modal Title";
+//var modalTitle = "Something is Wrong...";
+
+var email = document.getElementById("email").value;
+var password = document.getElementById("password").value;
 
 setToolTips();
 
@@ -11,22 +14,23 @@ setToolTips();
     window.alert = function() {
       modal = $('<div id="myModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"><div class="modal-dialog" role="document"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button><h4 id="myModalTitle" class="modal-title">Modal title</h4></div><div class="modal-body"><p>One fine body&hellip;</p></div><div class="modal-footer"><button type="button" class="btn btn-default" data-dismiss="modal">Close</button></div></div></div></div>');
       modal.find(".modal-body").text(arguments[0]);
-      modal.find(".modal-title").text(modalTitle);
+      modal.find(".modal-title").text("Something is Wrong...");
       modal.modal('show');
     };
   })();
 
 
 function validateLogIn() {
+    email = document.getElementById("email").value;
+    password = document.getElementById("password").value;
     const [emailValidation, passwordValidation] = validateEmailAndPassword();
 
     if(emailValidation && passwordValidation) {
-        var email = document.getElementById("email").value;
-        var password = document.getElementById("password").value;
         if(validateRecaptcha(email, password)) {
             //modalTitle = "Congrats!";
             //alert('You successfully logged into your account! \nEmail: ' + email +' \nPassword: ' + password);
-            submitForm();
+            //submitForm(email, password);
+            fetchDataToServer(email, password);
         }
         
     }
@@ -35,7 +39,7 @@ function validateLogIn() {
 function validateEmailAndPassword() {
     var emailValidation = validateEmail();
     var passwordValidation = validatePassword();
-    modalTitle = "Something is Wrong...";
+    //modalTitle = "Something is Wrong...";
 
     if(!emailValidation) 
         alert("Invalid email!\n" + emailRules);
@@ -47,14 +51,12 @@ function validateEmailAndPassword() {
 }
 
 function validateEmail() {
-    var email = document.getElementById("email").value;
     var validRegex = /^[a-zA-Z0-9.!#$%&'+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)$/;
 
   return email.match(validRegex) ? true : false;
 }
 
 function validatePassword() {
-    var password = document.getElementById("password").value;
     var passwordRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9])(?=.{6,})");
 
     return passwordRegex.test(password);
@@ -62,14 +64,14 @@ function validatePassword() {
 }
 
 function setToolTips() {
-    document.getElementById("password").title = passwordRules;
-    document.getElementById("email").title = emailRules;
+    password.title = passwordRules;
+    email.title = emailRules;
 }
 
 function submitForm(email, password) {
     var captcha = document.querySelector('#g-recaptcha-response').value;
 
-    fetch('https://js-project-kohl.vercel.app/users/login', {
+    fetch('/login', {
         method: 'POST',
         headers: { 
             'Accepts': 'application/json, text/plain. */*',
@@ -84,12 +86,27 @@ function submitForm(email, password) {
     });    
 }
 
+async function fetchDataToServer(email, password) {
+    var captcha = document.querySelector('#g-recaptcha-response').value;
+    const data = { email: email, password: password, captcha: captcha };
+    const url = '/login';
+    const options = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    }
+    const response = await fetch(url, options);
+    const json = await response.json();
+    console.log(json);
+}
+
 function validateRecaptcha()
 {
     const resp = grecaptcha.getResponse();
     if(resp.length == 0)
     {
-        document.getElementById("captcha").innerHTML = "You can't leave Captcha Code empty!";
         alert("You can't leave Captcha Code empty!");
         return false;
     }

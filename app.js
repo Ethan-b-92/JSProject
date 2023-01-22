@@ -9,17 +9,17 @@ const request = require('request');
 
 var app = express();
 
-// DB Config
-const db = require('./config/keys').MongoURI;
-// Connect to Mongo
+const db = require('./utils/keys').MongoURI;
+
 mongoose.connect(db, { useNewUrlParser: true })
    .then(() => console.log('MongoDB Connected...'))
    .catch(err => console.log(err));
 
-require("./config/passport")(passport);
+require("./utils/passport")(passport);
 
 
 app.set('views', path.join(__dirname, 'public'));
+app.set('view engine', 'ejs');
 app.engine('html', require('ejs').renderFile);
 app.set('view engine', 'html');
 
@@ -31,11 +31,6 @@ app.use(bodyParser.json());
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-
-app.use("/", require("./routes/index"));
-app.use("/users", require("./routes/users"));
-app.use("/treatments", require("./routes/treatments"));
-
 app.use(flash());
 app.use(session({
    secret: 'secret',
@@ -45,6 +40,11 @@ app.use(session({
 
 app.use(passport.initialize());
 app.use(passport.session());
+
+app.use("/", require("./routes/index"));
+// app.use("/users", require("./routes/users"));
+// app.use("/treatments", require("./routes/treatments"));
+
 
 
 module.exports = app;

@@ -6,7 +6,7 @@ var modalTitle = "Modal Title";
 
 setToolTips();
 
-//document.getElementById('form').addEventListener('submit', submitForm);
+//document.getElementById('form').addEventListener('submit', submitForm); //
 
 function submitForm(email, password) {
     var captcha = document.querySelector('#g-recaptcha-response').value;
