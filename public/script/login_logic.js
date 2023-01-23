@@ -64,8 +64,8 @@ function validatePassword() {
 }
 
 function setToolTips() {
-    password.title = passwordRules;
-    email.title = emailRules;
+    document.getElementById("password").title = passwordRules;
+    document.getElementById("email").title = emailRules;
 }
 
 function submitForm(email, password) {
@@ -97,9 +97,28 @@ async function fetchDataToServer(email, password) {
         },
         body: JSON.stringify(data)
     }
-    const response = await fetch(url, options);
-    const json = await response.json();
-    console.log(json);
+    const response = await fetch(url, options).then(response => {
+    //await fetch(url, { method: 'POST' }).then(response => {
+        // HTTP 301 response
+        // HOW CAN I FOLLOW THE HTTP REDIRECT RESPONSE?
+        if (response.redirected) {
+            window.location.href = response.url;
+        }
+    })
+    .catch(function(err) {
+        console.info(err + " url: " + url);
+    });
+    //await response.
+    //const json = await response.json();
+    //console.log(json);
+    //response.redirected('/tables');
+    //  if(json.msg == "failed captcha verification")
+    //  {
+    //      alert("Recaptcha failed! Are you a robot?");
+    //  }
+    //  else if(json.msg == "failed captcha verification"){
+    //     window.location.replace("/tables");
+    //  }
 }
 
 function validateRecaptcha()
@@ -111,4 +130,11 @@ function validateRecaptcha()
         return false;
     }
     return true;
+}
+
+function recaptchaSelected()
+{
+    var recaptcha = document.getElementById("submitBtn");
+    recaptcha.removeAttribute("disabled");
+    recaptcha.removeAttribute("title");
 }

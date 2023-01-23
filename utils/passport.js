@@ -7,6 +7,7 @@ const User = require('../models/userScheme');
 module.exports = function(passport) {
   passport.use(
     new LocalStrategy({ usernameField: 'email' }, (email, password, done) => {
+      console.log(email + " " + password);
       // Match user
       User.findOne({
         email: email
@@ -19,8 +20,10 @@ module.exports = function(passport) {
         bcrypt.compare(password, user.password, (err, isMatch) => {
           if (err) throw err;
           if (isMatch) {
+            console.log("user ok!!!!!!!!!!1");
             return done(null, user);
           } else {
+            console.log("password is wrong");
             return done(null, false, { message: 'Password incorrect' });
           }
         });

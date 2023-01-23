@@ -50,7 +50,7 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text" id="basic-addon1"><i class="fas fa-user"></i></span>
                                             </div>
-                                            <input type="email" value="" class="input form-control form-control-user" name="username"
+                                            <input type="email" value="" class="input form-control form-control-user" name="email"
                                                 id="email" aria-describedby="emailHelp" aria-label="Username" aria-describedby="basic-addon1"
                                                 placeholder="Username" required="true">
                                         </div>
@@ -67,23 +67,16 @@
                                                 <label class="custom-control-label" for="customCheck">Remember Me</label>
                                             </div>
                                         </div>
-                                        <div class="form-group mb-3">
-                                            <div class="g-recaptcha" data-sitekey="6Lc37tYjAAAAAL4kY-OOSvOMb8_krLzipzUONRt_"></div>
-                                            <!-- <div class="g-recaptcha" data-sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"></div> -->
+                                        <div class="form-group mb-3" style="text-align: center;">
+                                            <div class="g-recaptcha" data-sitekey="6Lc37tYjAAAAAL4kY-OOSvOMb8_krLzipzUONRt_" data-callback="recaptchaSelected" style="display: inline-block;"></div>
+                                            <!-- <div class="g-recaptcha" data-sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI" data-callback="recaptchaSelected" style="display: inline-block;"></div> -->
                                             <!--first: real site key, second test recaptcha site key-->
                                         </div>
                                         <!-- <button type="submit" onclick="validateLogIn()" class="btn btn-primary btn-user btn-block">Login</button> -->
-                                        <!--
-                                            <hr>
-                                            <a href="index.html" class="btn btn-google btn-user btn-block">
-                                                <i class="fab fa-google fa-fw"></i> Login with Google
-                                            </a>
-                                            <a href="index.html" class="btn btn-facebook btn-user btn-block">
-                                                <i class="fab fa-facebook-f fa-fw"></i> Login with Facebook
-                                            </a>-->
-                                            <!-- <button type="submit" class="btn btn-primary btn-user btn-block">Login</button> -->
-                                        </form>
-                                        <button type="submit" onclick="validateLogIn()" class="btn btn-primary btn-user btn-block">Login</button>
+                                        <!-- <button id="submitBtn" type="submit" class="btn btn-primary btn-user btn-block" title="please select recaptcha!" disabled>Login</button> -->
+                                    </form>
+                                    <button id="submitBtn" onclick="validateLogIn()" type="submit" class="btn btn-primary btn-user btn-block" title="please select recaptcha!" disabled>Login</button>
+                                    <!-- <button type="submit" onclick="validateLogIn()" class="btn btn-primary btn-user btn-block">Login</button> -->
                                     <!-- <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit" async defer> 
                                     </script>-->
                                     <hr>

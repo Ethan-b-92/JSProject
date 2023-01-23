@@ -22,6 +22,8 @@
 
     <link rel="stylesheet" href="css/styles.css">
 
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
 </head>
 
 <body id="app-background-image">
@@ -38,7 +40,8 @@
                             <div class="text-center">
                                 <h1 class="h4 text-gray-900 mb-4">Sign Up</h1>
                             </div>
-                            <form class="user" method="post" action="/users/register">
+                            <!-- <form class="user" method="post" action="/register"> -->
+                            <form class="user">
                                 <div class="form-group row">
                                     <div class="col-sm-6 mb-3 mb-sm-0">
                                         <input name="firstName" type="text" class="form-control form-control-user" id="firstName"
@@ -74,22 +77,16 @@
                                     </div>
                                     <!-- <input type="checkbox" onclick="showPassword()" title="Show password"> -->
                                 </div>
-                                <div class="form-group mb-3">
-                                    <div class="g-recaptcha" data-sitekey="6Lc37tYjAAAAAL4kY-OOSvOMb8_krLzipzUONRt_"></div>
-                                    <!-- <div class="g-recaptcha" data-sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"></div> -->
+                                <div class="form-group mb-3" style="text-align: center;">
+                                    <div class="g-recaptcha" data-sitekey="6Lc37tYjAAAAAL4kY-OOSvOMb8_krLzipzUONRt_" data-callback="recaptchaSelected" style="display: inline-block;"></div>
+                                    <!-- <div class="g-recaptcha" data-sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI" data-callback="recaptchaSelected" style="display: inline-block;"></div> -->
+                                    <!--first: real site key, second test recaptcha site key-->
                                 </div>
-                                <!--
-                                    <hr>
-                                    <a href="index.html" class="btn btn-google btn-user btn-block">
-                                        <i class="fab fa-google fa-fw"></i> Register with Google
-                                    </a>
-                                    <a href="index.html" class="btn btn-facebook btn-user btn-block">
-                                        <i class="fab fa-facebook-f fa-fw"></i> Register with Facebook
-                                    </a>-->
-                                </form>
-                                <button type="submit" class="btn btn-primary btn-user btn-block" onclick="validateSignUp()">
-                                    Register Account
-                                </button>
+                                <!-- <button type="submit" class="btn btn-primary btn-user btn-block" id="submitBtn" title="please select recaptcha!" disabled>Register Account</button> -->
+                            </form>
+                            <button type="submit" class="btn btn-primary btn-user btn-block" onclick="validateSignUp()" id="submitBtn" title="please select recaptcha!" disabled>
+                                Register Account
+                            </button>
                             <hr>
                             <div class="text-center">
                                 <a class="small" href="/forgot-password">Forgot Password?</a>

@@ -12,16 +12,24 @@ var app = express();
 const db = require('./utils/keys').MongoURI;
 
 mongoose.connect(db, { useNewUrlParser: true })
-   .then(() => console.log('MongoDB Connected...'))
-   .catch(err => console.log(err));
+.then(() => console.log('MongoDB Connected...'))
+.catch(err => console.log(err));
 
-require("./utils/passport")(passport);
+require('./utils/passport')(passport);
 
+app.use(session({
+   secret: 'secret',
+   resave: false,
+   saveUninitialized: false
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.set('views', path.join(__dirname, 'public'));
-app.set('view engine', 'ejs');
-app.engine('html', require('ejs').renderFile);
+//app.set('view engine', 'ejs');
 app.set('view engine', 'html');
+app.engine('html', require('ejs').renderFile);
 
 
 
@@ -32,14 +40,7 @@ app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(flash());
-app.use(session({
-   secret: 'secret',
-   resave: false,
-   saveUninitialized: false
-}));
 
-app.use(passport.initialize());
-app.use(passport.session());
 
 app.use("/", require("./routes/index"));
 // app.use("/users", require("./routes/users"));

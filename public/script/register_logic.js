@@ -38,7 +38,7 @@ function validateSignUp() {
             console.log("success!");
             //alert(successfulMessage);
             //submitForm(email, password);
-            fetchDataToServer(email, password);
+            fetchDataToServer(email, password, firstName, lastName);
         }
     }
 }
@@ -63,7 +63,7 @@ function validateEmailAndPassword() {
 }
 
 function validateName() {
-    var regName = /^[a-zA-Z]+ [a-zA-Z]+$/;
+    var regName = /^[a-zA-Z]+$/;
     return (regName.test(firstName) && regName.test(lastName));
 }
 
@@ -85,12 +85,12 @@ function validatePassword() {
 }
 
 function showPassword() {
-    if (password.type === "password") {
-        password.type = "text";
-        confirmPas.type = "text";
+    if (document.getElementById("password").type === "password") {
+        document.getElementById("password").type = "text";
+        document.getElementById("confirm").type = "text";
     } else {
-        password.type = "password";
-        confirmPas.type = "password";
+        document.getElementById("password").type = "password";
+        document.getElementById("confirm").type = "password";
     }
 }
 
@@ -120,9 +120,9 @@ function submitForm(email, password) {
         });
 }
 
-async function fetchDataToServer(email, password) {
+async function fetchDataToServer(email, password, firstName, lastName) {
     var captcha = document.querySelector('#g-recaptcha-response').value;
-    const data = { email: email, password: password, captcha: captcha };
+    const data = { firstName: firstName, lastName: lastName, email: email, password: password, captcha: captcha };
     const url = '/register';
     const options = {
         method: 'POST',
@@ -131,9 +131,19 @@ async function fetchDataToServer(email, password) {
         },
         body: JSON.stringify(data)
     }
-    const response = await fetch(url, options);
-    const json = await response.json();
-    console.log(json);
+    await fetch(url, options).then(response => {
+        //await fetch(url, { method: 'POST' }).then(response => {
+            // HTTP 301 response
+            // HOW CAN I FOLLOW THE HTTP REDIRECT RESPONSE?
+            if (response.redirected) {
+                window.location.href = response.url;
+            }
+        })
+        .catch(function(err) {
+            console.info(err + " url: " + url);
+        });
+    //const json = await response.json();
+    //console.log(json);
 }
 
 function validateRecaptcha() {
@@ -143,4 +153,11 @@ function validateRecaptcha() {
         return false;
     }
     return true;
+}
+
+function recaptchaSelected()
+{
+    var recaptcha = document.getElementById("submitBtn");
+    recaptcha.removeAttribute("disabled");
+    recaptcha.removeAttribute("title");
 }
