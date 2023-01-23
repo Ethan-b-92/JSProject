@@ -80,6 +80,17 @@
                                     <!-- <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit" async defer> 
                                     </script>-->
                                     <hr>
+
+
+                                          <div>
+                                            <% if (messages.error) { %>
+                                                <%= messages.error %>
+                                              <% } %>
+                                          </div>
+
+
+
+
                                     <div class="text-center">
                                         <a class="small" href="/forgot-password">Forgot Password?</a>
                                     </div>

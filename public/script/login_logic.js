@@ -9,15 +9,15 @@ var password = document.getElementById("password").value;
 
 setToolTips();
 
-(function() {
+(function () {
     var proxied = window.alert;
-    window.alert = function() {
-      modal = $('<div id="myModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"><div class="modal-dialog" role="document"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button><h4 id="myModalTitle" class="modal-title">Modal title</h4></div><div class="modal-body"><p>One fine body&hellip;</p></div><div class="modal-footer"><button type="button" class="btn btn-default" data-dismiss="modal">Close</button></div></div></div></div>');
-      modal.find(".modal-body").text(arguments[0]);
-      modal.find(".modal-title").text("Something is Wrong...");
-      modal.modal('show');
+    window.alert = function () {
+        modal = $('<div id="myModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"><div class="modal-dialog" role="document"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button><h4 id="myModalTitle" class="modal-title">Modal title</h4></div><div class="modal-body"><p>One fine body&hellip;</p></div><div class="modal-footer"><button type="button" class="btn btn-default" data-dismiss="modal">Close</button></div></div></div></div>');
+        modal.find(".modal-body").text(arguments[0]);
+        modal.find(".modal-title").text("Something is Wrong...");
+        modal.modal('show');
     };
-  })();
+})();
 
 
 function validateLogIn() {
@@ -25,14 +25,14 @@ function validateLogIn() {
     password = document.getElementById("password").value;
     const [emailValidation, passwordValidation] = validateEmailAndPassword();
 
-    if(emailValidation && passwordValidation) {
-        if(validateRecaptcha(email, password)) {
+    if (emailValidation && passwordValidation) {
+        if (validateRecaptcha(email, password)) {
             //modalTitle = "Congrats!";
             //alert('You successfully logged into your account! \nEmail: ' + email +' \nPassword: ' + password);
             //submitForm(email, password);
             fetchDataToServer(email, password);
         }
-        
+
     }
 }
 
@@ -41,10 +41,10 @@ function validateEmailAndPassword() {
     var passwordValidation = validatePassword();
     //modalTitle = "Something is Wrong...";
 
-    if(!emailValidation) 
+    if (!emailValidation)
         alert("Invalid email!\n" + emailRules);
-    
-    else if(!passwordValidation)
+
+    else if (!passwordValidation)
         alert("Invalid password!\n" + passwordRules);
 
     return [emailValidation, passwordValidation];
@@ -53,7 +53,7 @@ function validateEmailAndPassword() {
 function validateEmail() {
     var validRegex = /^[a-zA-Z0-9.!#$%&'+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)$/;
 
-  return email.match(validRegex) ? true : false;
+    return email.match(validRegex) ? true : false;
 }
 
 function validatePassword() {
@@ -73,17 +73,17 @@ function submitForm(email, password) {
 
     fetch('/login', {
         method: 'POST',
-        headers: { 
+        headers: {
             'Accepts': 'application/json, text/plain. */*',
-            'Content-Type': 'application/json' 
+            'Content-Type': 'application/json'
         },
-        body: JSON.stringify( { email: email, password: password, captcha: captcha })
+        body: JSON.stringify({ email: email, password: password, captcha: captcha })
     })
-    .then((res)=> res.json)
-    .then((data)=> {
-        console.log(data);
-        alert(data.msg);
-    });    
+        .then((res) => res.json)
+        .then((data) => {
+            console.log(data);
+            alert(data.msg);
+        });
 }
 
 async function fetchDataToServer(email, password) {
@@ -97,17 +97,20 @@ async function fetchDataToServer(email, password) {
         },
         body: JSON.stringify(data)
     }
-    const response = await fetch(url, options).then(response => {
-    //await fetch(url, { method: 'POST' }).then(response => {
-        // HTTP 301 response
-        // HOW CAN I FOLLOW THE HTTP REDIRECT RESPONSE?
+    await fetch(url, options).then(response => {
+        //document.getElementById("modal").ariaHidden = false;
+        //('#modal').modal('show');
+        var text = response.text();
+        if(!response.ok) {
+            return response.text().then(text => { throw new Error(text) })
+        }
         if (response.redirected) {
             window.location.href = response.url;
         }
     })
-    .catch(function(err) {
-        console.info(err + " url: " + url);
-    });
+        .catch(function (err) {
+            console.info(err + " url: " + url);
+        });
     //await response.
     //const json = await response.json();
     //console.log(json);
@@ -121,19 +124,16 @@ async function fetchDataToServer(email, password) {
     //  }
 }
 
-function validateRecaptcha()
-{
+function validateRecaptcha() {
     const resp = grecaptcha.getResponse();
-    if(resp.length == 0)
-    {
+    if (resp.length == 0) {
         alert("You can't leave Captcha Code empty!");
         return false;
     }
     return true;
 }
 
-function recaptchaSelected()
-{
+function recaptchaSelected() {
     var recaptcha = document.getElementById("submitBtn");
     recaptcha.removeAttribute("disabled");
     recaptcha.removeAttribute("title");

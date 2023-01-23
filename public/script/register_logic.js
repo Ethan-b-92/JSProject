@@ -1,3 +1,5 @@
+const reqFlash = require("req-flash");
+
 const passwordRules = "Password must contain: \n1. At least one upper case letter\n\
 2. At least one lower case letter \n3. At least one digit \n4. At least one special character\n\
 5. At least 6 characters\nSpecial characters: : ! @ # \$ % ^ & * ( ) - _ = + \ | [ ] { } ; : / ? . > \<";
@@ -35,7 +37,7 @@ function validateSignUp() {
         if (validateRecaptcha(email, password)) {
             //modalTitle = "Congrats!";
             //var successfulMessage = "You successfully signed up! \nEmail: " + email + " \nPassword: " + password;
-            console.log("success!");
+            //console.log("success!");
             //alert(successfulMessage);
             //submitForm(email, password);
             fetchDataToServer(email, password, firstName, lastName);
@@ -132,9 +134,11 @@ async function fetchDataToServer(email, password, firstName, lastName) {
         body: JSON.stringify(data)
     }
     await fetch(url, options).then(response => {
-        //await fetch(url, { method: 'POST' }).then(response => {
-            // HTTP 301 response
-            // HOW CAN I FOLLOW THE HTTP REDIRECT RESPONSE?
+            var already_exist_msg = localStorage.getItem('user_alredy_exist');
+            if(already_exist_msg != null) {
+                alert(already_exist_msg);
+                window.localStorage.clear();
+            }
             if (response.redirected) {
                 window.location.href = response.url;
             }

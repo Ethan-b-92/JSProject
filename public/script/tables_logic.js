@@ -64,7 +64,7 @@ function appendTreatments(treatment, index) {
 };
 
 const getTreatments = () => {
-    fetch('http://localhost:8012/tables') // Fetch for all scores. The response is an array of objects that is sorted in decreasing order
+    fetch('/tables') // Fetch for all scores. The response is an array of objects that is sorted in decreasing order
         .then(res => res.json())
         .then(treatmentList => {
             table = document.getElementById("dataTable");
@@ -76,3 +76,13 @@ const getTreatments = () => {
             }
         });
 };
+
+async function logout() {
+
+    await fetch('/logout', { method: 'POST' })
+    .then(response => {
+        if (response.redirected) {
+            window.location.href = response.url;
+        }
+    });
+}

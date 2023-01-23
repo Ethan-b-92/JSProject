@@ -13,6 +13,7 @@ module.exports = function(passport) {
         email: email
       }).then(user => {
         if (!user) {
+          console.log("user doesn't exist");
           return done(null, false, { message: 'That email is not registered' });
         }
 

@@ -71,9 +71,11 @@ router.post("/register", async (req, res) => {
         .then((user) => {
           if (user) //already exist
           {
-            req.flash('error_msg', 'This username already exists');
+            //req.flash('error_msg', 'This email already exists');
+            //res.text( 'This username already exists' );
+            window.localStorage.setItem('user_alredy_exist', 'This email already exist!');
             console.log('user exists');
-            res.redirect('/register');
+            //res.redirect('/register');
           }
           else {
             const newUser = new User({
@@ -129,10 +131,13 @@ router.post('/login', async (req, res, next) => {
   });
 });
 
-router.get("/logout", (req, res) => {
-  req.logOut();
-  req.flash("success_msg", "You are logged out");
-  res.redirect("/users/login");
+router.post("/logout", (req, res, next) => {
+  req.logOut((err) => {
+    if (err) { return next(err); }
+    res.redirect('/');
+  });
+  //req.flash("success_msg", "You are logged out");
+  //res.redirect("/login");
 });
 
 // router.post("/tables", checkAuthenticated, (req, res) => { //*************** */
@@ -196,7 +201,7 @@ router.post('/forgot-password', (req, res) => {
                             We heard that you forgot your password to our site...\n\
                             This is your new password: ${new_password}`;
         try {
-          /*await*/ sendEmail(email, text);
+          sendEmail(email, text);
           res.json({
             status: 'success',
             msg: 'The new password is in your email'

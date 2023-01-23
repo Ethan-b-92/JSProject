@@ -16,8 +16,9 @@
     <link
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet">
-    
-        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous" />
+
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css"
+        integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous" />
 
     <!-- Custom styles for this template -->
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
@@ -173,16 +174,16 @@
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">You</span>
-                                <img class="img-profile rounded-circle"
-                                    src="css/images/car-maintenance-buddy-logo.png">
+                                <img class="img-profile rounded-circle" src="css/images/car-maintenance-buddy-logo.png">
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                 aria-labelledby="userDropdown">
-                                <a class="dropdown-item" href="/logout" data-toggle="modal" data-target="#logoutModal">
+                                <!-- <a class="dropdown-item" href="/logout" data-toggle="modal" data-target="#logoutModal"> -->
+                                <button class="dropdown-item" onclick="logout()">
                                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Logout
-                                </a>
+                                </button>
                             </div>
                         </li>
 
@@ -203,19 +204,26 @@
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">About us</h6> <!--****************************-->
+                            <h6 class="m-0 font-weight-bold text-primary">About us</h6>
+                            <!--****************************-->
                         </div>
                         <div class="card-body">
-                            Our company is Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam faucibus mollis odio quis cursus. 
-                            Quisque vehicula, justo sit amet aliquam rutrum, libero odio mattis leo, quis bibendum ligula ex sit amet metus. 
-                            Donec ut nunc et justo pretium luctus ut et lorem. Nam orci quam, congue ut mauris eget, convallis sodales eros. 
-                            Morbi eleifend augue at porta varius. In condimentum condimentum nisl, quis bibendum orci ullamcorper volutpat. 
-                            Praesent rutrum velit vel ex faucibus, eget feugiat turpis maximus. Etiam facilisis erat a interdum dapibus. 
+                            Our company is Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam faucibus
+                            mollis odio quis cursus.
+                            Quisque vehicula, justo sit amet aliquam rutrum, libero odio mattis leo, quis bibendum
+                            ligula ex sit amet metus.
+                            Donec ut nunc et justo pretium luctus ut et lorem. Nam orci quam, congue ut mauris eget,
+                            convallis sodales eros.
+                            Morbi eleifend augue at porta varius. In condimentum condimentum nisl, quis bibendum orci
+                            ullamcorper volutpat.
+                            Praesent rutrum velit vel ex faucibus, eget feugiat turpis maximus. Etiam facilisis erat a
+                            interdum dapibus.
                             Fusce ipsum odio, maximus at ultrices in, consectetur nec eros.
                             Feel free to contact us!
                         </div>
                         <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">Contact Us</h6> <!--****************************-->
+                            <h6 class="m-0 font-weight-bold text-primary">Contact Us</h6>
+                            <!--****************************-->
                         </div>
                         <div class="card-body">
                             <div>
@@ -235,7 +243,7 @@
                                                     <span class="input-group-text">Email</span>
                                                 </div>
                                                 <input type="text" class="form-control">
-                                            </div>                    
+                                            </div>
                                             <br>
                                             <select class="form-control">
                                                 <option value="" disabled selected> Contact us Concerning*</option>
@@ -250,10 +258,11 @@
                                                 </div>
                                                 <textarea rows="4" type="text" class="form-control">
                                                     </textarea>
-                                            </div>                
+                                            </div>
                                         </form>
                                         <br>
-                                        <button type="button" onclick="submitMessage()" class="btn btn-primary m-3"> Submit </button>
+                                        <button type="button" onclick="submitMessage()" class="btn btn-primary m-3">
+                                            Submit </button>
                                     </div>
                                     <div class="col">
                                         <div id="support" class="col">
@@ -263,7 +272,8 @@
                                                 </div>
                                                 <div class="col-10">
                                                     <header id="supportHeader"><b>NEED 24/7 SUPPORT?</b></header>
-                                                    <button type="button" class="btn btn-primary m-1">CONTACT SUPPORT</button>
+                                                    <button type="button" class="btn btn-primary m-1">CONTACT
+                                                        SUPPORT</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -274,7 +284,8 @@
                                                     <i class="fa fa-solid fa-comments-dollar fa-2x"></i>
                                                 </div>
                                                 <div class="col-10">
-                                                    <div class="infoTextHeaders" id="callSalesHeader"><b>CALL SALES NOW</b></div>
+                                                    <div class="infoTextHeaders" id="callSalesHeader"><b>CALL SALES
+                                                            NOW</b></div>
                                                     <div class="infoTextLines">+1-512-827-3500</div>
                                                 </div>
                                             </div>
@@ -284,7 +295,8 @@
                                                     <i class="fa fa-solid fa-clock fa-2x"></i>
                                                 </div>
                                                 <div class="col-10">
-                                                    <div class="infoTextHeaders" id="salesHoursHeader"><b>SALES HOURS</b></div>
+                                                    <div class="infoTextHeaders" id="salesHoursHeader"><b>SALES
+                                                            HOURS</b></div>
                                                     <div class="infoTextLines">7am-7pm CST</div>
                                                 </div>
                                             </div>
@@ -295,7 +307,10 @@
                                                 </div>
                                                 <div class="col-10">
                                                     <div class="infoTextHeaders"><b>SALES CONTACT INFO</b></div>
-                                                    <div class="infoTextLines">car_maintanance_buddy@yahoo.com<br>MAILING ADDRESS<br>Car Maintenance Buddy<br>Qiryat Harta, Haifa District 78701<br>Israel</div>
+                                                    <div class="infoTextLines">
+                                                        car_maintanance_buddy@yahoo.com<br>MAILING ADDRESS<br>Car
+                                                        Maintenance Buddy<br>Qiryat Harta, Haifa District
+                                                        78701<br>Israel</div>
                                                 </div>
                                             </div>
                                         </div>
@@ -363,6 +378,16 @@
 
         function submitMessage() {
             alert("We will answer within 4 buisness days");
+        }
+
+        async function logout() {
+
+            await fetch('/logout', { method: 'POST' })
+                .then(response => {
+                    if (response.redirected) {
+                        window.location.href = response.url;
+                    }
+                });
         }
 
     </script>
