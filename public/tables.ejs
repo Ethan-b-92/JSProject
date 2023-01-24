@@ -9,15 +9,16 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Dashboard</title><!--****************************-->
+    <title>Dashboard</title>
 
     <!-- Custom fonts for this template -->
     <link href="css/all.min.css" rel="stylesheet" type="text/css">
     <link
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet">
-    
-        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous" />
+
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css"
+        integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous" />
 
     <!-- Custom styles for this template -->
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
@@ -36,7 +37,7 @@
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
             <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="tables.html">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="tables.ejs">
                 <div class="sidebar-brand-icon small">
                     <img src="css/images/car-maintenance-buddy-logo.png" width="55" height="40">
                 </div>
@@ -48,7 +49,7 @@
 
             <!-- Nav Item - Dashboard -->
             <li class="nav-item active">
-                <a class="nav-link" href="tables.html">
+                <a class="nav-link" href="/tables">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Dashboard</span></a>
             </li>
@@ -92,7 +93,7 @@
 
             <!-- Nav Item - Tables -->
             <li class="nav-item">
-                <a class="nav-link" href="about-us.html">
+                <a class="nav-link" href="about-us">
                     <i class="fas fa-fw fa-address-card"></i>
                     <span>About Us</span></a>
             </li>
@@ -173,8 +174,7 @@
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span class="mr-2 d-none d-lg-inline text-gray-600 small" id="name">You</span>
-                                <img class="img-profile rounded-circle"
-                                    src="css/images/car-maintenance-buddy-logo.png">
+                                <img class="img-profile rounded-circle" src="css/images/car-maintenance-buddy-logo.png">
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -197,60 +197,62 @@
 
                     <!-- Page Heading -->
                     <h1 class="h3 mb-2 text-gray-800">Treatments Table</h1>
-                    <p class="mb-4">The treatments table contain all car treatments, You can add, delete and edit each column. </p> 
+                    <p class="mb-4">The treatments table contain all car treatments, You can add, delete and edit each
+                        column. </p>
 
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">Treatments Table</h6> 
+                            <h6 class="m-0 font-weight-bold text-primary">Treatments Table</h6>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
-                                <div class="table-responsive">
-                                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                        <!-- <thead>
+                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                    <thead>
+                                        <tr>
+                                            <th>Treatment Number</th>
+                                            <th>Treatment Information</th>
+                                            <th>Date</th>
+                                            <th>Worker email</th>
+                                            <th>Car Number</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <% treatmentList.forEach(function (RowDataPacket, index) { %>
                                             <tr>
-                                                <th>Treatment Number</th>
-                                                <th>Treatment Information</th>
-                                                <th>Date</th>
-                                                <th>Worker email</th>
-                                                <th>Car Number</th>
-                                                <th>Action</th>
+                                                <td>
+                                                    <%= RowDataPacket.treatmentNumber %>
+                                                </td>
+                                                <td>
+                                                    <%= RowDataPacket.treatmentInfo %>
+                                                </td>
+                                                <td>
+                                                    <%= RowDataPacket.treatmentDate %>
+                                                </td>
+                                                <td>
+                                                    <%= RowDataPacket.workerEmail %>
+                                                </td>
+                                                <td>
+                                                    <%= RowDataPacket.carNumber %>
+                                                </td>
+                                                <td>
+                                                    <button class="btn btn-primary"> Edit </button>
+                                                    <button class="btn btn-danger"> Remove </button>
+                                                </td>
                                             </tr>
-                                        </thead>
-                                        <tbody>
-                                            <% treatmentList.forEach(function (RowDataPacket) { %>
-                                                <tr>
-                                                    <td>
-                                                        <%= RowDataPacket.Treatment_Number %>
-                                                    </td>
-                                                    <td>
-                                                        <%= RowDataPacket.Treatment_Information %>
-                                                    </td>
-                                                    <td>
-                                                        <%= RowDataPacket.Date %>
-                                                    </td>
-                                                    <td>
-                                                        <%= RowDataPacket.Worker_Email %>
-                                                    </td>
-                                                    <td>
-                                                        <%= RowDataPacket.Car_Number %>
-                                                    </td>
-                                                    <td>
-                                                        <button>
-                                                            Edit
-                                                        </button>
-                                                        <button>
-                                                            Remove
-                                                        </button>
-                                                    </td>
-                                                </tr>
                                             <% }) %>
-                                        </tbody> -->
-                                    </table>
-                                </div>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <button class="btn btn-primary btn-user btn-block" href="#" data-toggle="modal"
+                            data-target="#logoutModal">
+                            Add a new car treatment
+                        </button>
                     </div>
 
                 </div>
@@ -279,6 +281,48 @@
     <a class="scroll-to-top rounded" href="#page-top">
         <i class="fas fa-angle-up"></i>
     </a>
+
+    <!-- Logout Modal-->
+    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Add a new car treatment</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">X</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group row">
+                            <input name="treatmentInfo" type="text" class="form-control form-control-user"
+                                id="treatmentInfo" placeholder="Treatment information" required="true">
+                        </div>
+                        <div class="form-group">
+                            <input name="date" type="date" class="form-control form-control-user" id="date"
+                                placeholder="Treatment date" required="true">
+                        </div>
+                        <div class="form-group">
+                            <input name="workerEmail" type="email" class="form-control form-control-user"
+                                id="workerEmail" placeholder="Worker email" required="true">
+                        </div>
+                        <div class="form-group">
+                            <input name="carNumber" type="number" class="form-control form-control-user" id="carNumber"
+                                placeholder="Car number" required="true">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary" onclick="addNewTreatment()">Add!</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
 
     <!-- Bootstrap core JavaScript-->
     <script src="script/jquery.min.js"></script>

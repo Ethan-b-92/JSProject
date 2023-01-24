@@ -9,7 +9,7 @@ const TreatmentSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  Date: {
+  treatmentDate: {
     type: String,
     default: Date.now,
   },

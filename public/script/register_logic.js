@@ -1,18 +1,8 @@
-const reqFlash = require("req-flash");
-
 const passwordRules = "Password must contain: \n1. At least one upper case letter\n\
 2. At least one lower case letter \n3. At least one digit \n4. At least one special character\n\
 5. At least 6 characters\nSpecial characters: : ! @ # \$ % ^ & * ( ) - _ = + \ | [ ] { } ; : / ? . > \<";
 const emailRules = "Email field should match the format: aaa@bbb.ccc";
 // var modalTitle = "Something is Wrong...";
-
-var firstName = document.getElementById("firstName").value;
-var lastName = document.getElementById("lastName").value;
-var email = document.getElementById("email").value;
-var password = document.getElementById("password").value;
-var confirmPas = document.getElementById("confirm").value;
-
-setToolTips();
 
 (function () {
     var proxied = window.alert;
@@ -24,6 +14,15 @@ setToolTips();
     };
 })();
 
+var firstName = document.getElementById("firstName").value;
+var lastName = document.getElementById("lastName").value;
+var email = document.getElementById("email").value;
+var password = document.getElementById("password").value;
+var confirmPas = document.getElementById("confirm").value;
+
+setToolTips();
+
+
 function validateSignUp() {
     firstName = document.getElementById("firstName").value;
     lastName = document.getElementById("lastName").value;
@@ -34,14 +33,14 @@ function validateSignUp() {
     //modalTitle = "Something is Wrong...";
 
     if (emailValidation && passwordValidation && nameValidation && confirmationValidation) {
-        if (validateRecaptcha(email, password)) {
+        //if (validateRecaptcha(email, password)) {
             //modalTitle = "Congrats!";
             //var successfulMessage = "You successfully signed up! \nEmail: " + email + " \nPassword: " + password;
             //console.log("success!");
             //alert(successfulMessage);
             //submitForm(email, password);
             fetchDataToServer(email, password, firstName, lastName);
-        }
+        //}
     }
 }
 
@@ -134,13 +133,13 @@ async function fetchDataToServer(email, password, firstName, lastName) {
         body: JSON.stringify(data)
     }
     await fetch(url, options).then(response => {
-            var already_exist_msg = localStorage.getItem('user_alredy_exist');
-            if(already_exist_msg != null) {
-                alert(already_exist_msg);
-                window.localStorage.clear();
-            }
             if (response.redirected) {
+                if(response.url.includes('register')) {
+                    alert("This username already exists!");
+                }
+                else {
                 window.location.href = response.url;
+                }
             }
         })
         .catch(function(err) {

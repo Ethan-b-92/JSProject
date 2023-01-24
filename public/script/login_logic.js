@@ -26,12 +26,12 @@ function validateLogIn() {
     const [emailValidation, passwordValidation] = validateEmailAndPassword();
 
     if (emailValidation && passwordValidation) {
-        if (validateRecaptcha(email, password)) {
+        //if (validateRecaptcha(email, password)) {
             //modalTitle = "Congrats!";
             //alert('You successfully logged into your account! \nEmail: ' + email +' \nPassword: ' + password);
             //submitForm(email, password);
             fetchDataToServer(email, password);
-        }
+        //}
 
     }
 }
@@ -97,31 +97,20 @@ async function fetchDataToServer(email, password) {
         },
         body: JSON.stringify(data)
     }
-    await fetch(url, options).then(response => {
-        //document.getElementById("modal").ariaHidden = false;
-        //('#modal').modal('show');
-        var text = response.text();
-        if(!response.ok) {
-            return response.text().then(text => { throw new Error(text) })
-        }
+    await fetch(url, options)
+    .then(response => {
         if (response.redirected) {
-            window.location.href = response.url;
+            if(response.url.includes('login')) {
+                alert("username or password is incorrect, please check again.");
+            }
+            else {
+                window.location.href = response.url;
+            }
         }
-    })
-        .catch(function (err) {
-            console.info(err + " url: " + url);
-        });
-    //await response.
-    //const json = await response.json();
-    //console.log(json);
-    //response.redirected('/tables');
-    //  if(json.msg == "failed captcha verification")
-    //  {
-    //      alert("Recaptcha failed! Are you a robot?");
-    //  }
-    //  else if(json.msg == "failed captcha verification"){
-    //     window.location.replace("/tables");
-    //  }
+    }).catch(function (err) {
+        console.info(err + " url: " + url);
+    });
+
 }
 
 function validateRecaptcha() {
