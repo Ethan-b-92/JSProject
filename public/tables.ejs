@@ -37,7 +37,7 @@
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
             <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="tables.ejs">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/tables">
                 <div class="sidebar-brand-icon small">
                     <img src="css/images/car-maintenance-buddy-logo.png" width="55" height="40">
                 </div>
@@ -173,7 +173,7 @@
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small" id="name">You</span>
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small" id="name"><%= name %></span>
                                 <img class="img-profile rounded-circle" src="css/images/car-maintenance-buddy-logo.png">
                             </a>
                             <!-- Dropdown - User Information -->
@@ -219,26 +219,28 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <% treatmentList.forEach(function (RowDataPacket, index) { %>
+                                        <% treatmentList.forEach(function (RowDataPacket) { %>
                                             <tr>
-                                                <td>
+                                                <td id="treatmentNumber<%=RowDataPacket._id%>">
                                                     <%= RowDataPacket.treatmentNumber %>
                                                 </td>
-                                                <td>
+                                                <td id="treatmentInfo<%=RowDataPacket._id%>">
                                                     <%= RowDataPacket.treatmentInfo %>
                                                 </td>
-                                                <td>
+                                                <td id="treatmentDate<%=RowDataPacket._id%>">
                                                     <%= RowDataPacket.treatmentDate %>
                                                 </td>
-                                                <td>
+                                                <td id="workerEmail<%=RowDataPacket._id%>">
                                                     <%= RowDataPacket.workerEmail %>
                                                 </td>
-                                                <td>
+                                                <td id="carNumber<%=RowDataPacket._id%>">
                                                     <%= RowDataPacket.carNumber %>
                                                 </td>
                                                 <td>
-                                                    <button class="btn btn-primary"> Edit </button>
-                                                    <button class="btn btn-danger"> Remove </button>
+                                                    <button class="btn btn-primary" id="edit_button<%=RowDataPacket._id%>" onclick="editRow('<%= RowDataPacket._id%>')">Edit</button>
+                                                    <button class="btn btn-primary" id="save_button<%=RowDataPacket._id%>" onclick="saveRow('<%= RowDataPacket._id%>')" style="display: none;">Save</button>
+                                                    <button class="btn btn-danger" id="remove_button<%=RowDataPacket._id%>" onclick="removeRow('<%= RowDataPacket._id%>')">Remove</button>
+                                                    <button class="btn btn-danger" id="cancel_button<%=RowDataPacket._id%>" onclick="cancelEdit('<%= RowDataPacket._id%>')" style="display: none;">Cancel</button>
                                                 </td>
                                             </tr>
                                             <% }) %>
@@ -250,7 +252,7 @@
 
                     <div class="form-group mb-3">
                         <button class="btn btn-primary btn-user btn-block" href="#" data-toggle="modal"
-                            data-target="#logoutModal">
+                            data-target="#addTreatmentModal">
                             Add a new car treatment
                         </button>
                     </div>
@@ -283,7 +285,7 @@
     </a>
 
     <!-- Logout Modal-->
-    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    <div class="modal fade" id="addTreatmentModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
         aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -297,18 +299,18 @@
                     <form>
                         <div class="form-group row">
                             <input name="treatmentInfo" type="text" class="form-control form-control-user"
-                                id="treatmentInfo" placeholder="Treatment information" required="true">
+                                id="new_treatmentInfo" placeholder="Treatment information" required="true">
                         </div>
                         <div class="form-group">
-                            <input name="date" type="date" class="form-control form-control-user" id="date"
+                            <input name="date" type="datetime-local" class="form-control form-control-user" id="new_date"
                                 placeholder="Treatment date" required="true">
                         </div>
                         <div class="form-group">
                             <input name="workerEmail" type="email" class="form-control form-control-user"
-                                id="workerEmail" placeholder="Worker email" required="true">
+                                id="new_workerEmail" placeholder="Worker email" required="true">
                         </div>
                         <div class="form-group">
-                            <input name="carNumber" type="number" class="form-control form-control-user" id="carNumber"
+                            <input name="carNumber" type="number" class="form-control form-control-user" id="new_carNumber"
                                 placeholder="Car number" required="true">
                         </div>
                     </form>
@@ -339,7 +341,7 @@
     <script src="script/dataTables.bootstrap4.min.js"></script>
 
     <!-- Page level custom scripts -->
-    <!-- <script src="js/demo/datatables-demo.js"></script> -->
+    <script src="script/datatables-demo.js"></script>
 
     <script src="script/tables_logic.js"></script>
 

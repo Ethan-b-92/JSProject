@@ -11,7 +11,8 @@ const TreatmentSchema = new mongoose.Schema({
   },
   treatmentDate: {
     type: String,
-    default: Date.now,
+    required: true,
+    default: Date.now
   },
   workerEmail: {
     type: String,

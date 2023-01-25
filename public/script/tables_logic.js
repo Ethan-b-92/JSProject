@@ -1,6 +1,12 @@
 //const scoreDiv = document.querySelector("div.scoreboard"); // Find the scoreboard div in our html
-const table = document.getElementById("dataTable");
-let tableHeaders = ["Treatment Number", "Treatment Information", "Date", "Worker email", "Car Number", "Action"];
+//const table = document.getElementById("dataTable");
+//let tableHeaders = ["Treatment Number", "Treatment Information", "Date", "Worker email", "Car Number", "Action"];
+
+var treatmentInfo_InnerHTML = "";
+var treatmentDate_InnerHTML = "";
+var workerEmail_InnerHTML = "";
+var carNumber_InnerHTML = "";
+
 
 (function () {
     var proxied = window.alert;
@@ -12,66 +18,66 @@ let tableHeaders = ["Treatment Number", "Treatment Information", "Date", "Worker
     };
 })();
 
-function createTreatmentsTable() {
-    //while (scoreDiv.firstChild)
-    //    scoreDiv.removeChild(scoreDiv.firstChild); // Remove all children from scoreboard div (if any)
-    //let scoreboardTable = document.createElement('table'); // Create the table itself
-    //scoreboardTable.className = 'scoreboardTable';
+// function createTreatmentsTable() {
+//     //while (scoreDiv.firstChild)
+//     //    scoreDiv.removeChild(scoreDiv.firstChild); // Remove all children from scoreboard div (if any)
+//     //let scoreboardTable = document.createElement('table'); // Create the table itself
+//     //scoreboardTable.className = 'scoreboardTable';
 
-    let tableHead = document.createElement('thead'); // Creates the table header group element
-    //tableHead.className = 'tableHead';
-    let tableHeaderRow = document.createElement('tr'); // Creates the row that will contain the headers
-    //tableHeaderRow.className = 'tableHeaderRow';
+//     let tableHead = document.createElement('thead'); // Creates the table header group element
+//     //tableHead.className = 'tableHead';
+//     let tableHeaderRow = document.createElement('tr'); // Creates the row that will contain the headers
+//     //tableHeaderRow.className = 'tableHeaderRow';
 
-    // Will iterate over all the strings in the tableHeader array and will append the header cells to the table header row
-    tableHeaders.forEach(header => {
-        let treatmentHeader = document.createElement('th'); // Creates the current header cell during a specific iteration
-        treatmentHeader.innerText = header;
-        tableHeaderRow.append(treatmentHeader); // Appends the current header cell to the header row
-    });
+//     // Will iterate over all the strings in the tableHeader array and will append the header cells to the table header row
+//     tableHeaders.forEach(header => {
+//         let treatmentHeader = document.createElement('th'); // Creates the current header cell during a specific iteration
+//         treatmentHeader.innerText = header;
+//         tableHeaderRow.append(treatmentHeader); // Appends the current header cell to the header row
+//     });
 
-    tableHead.append(tableHeaderRow); // Appends the header row to the table header group element
-    table.append(tableHead);
+//     tableHead.append(tableHeaderRow); // Appends the header row to the table header group element
+//     table.append(tableHead);
 
-    let tableBody = document.createElement('tbody'); // Creates the table body group element
-    //tableBody.className = "scoreboardTable-Body";
-    table.append(tableBody); // Appends the table body group element to the table
+//     let tableBody = document.createElement('tbody'); // Creates the table body group element
+//     //tableBody.className = "scoreboardTable-Body";
+//     table.append(tableBody); // Appends the table body group element to the table
 
-    //scoreDiv.append(scoreboardTable); // Appends the table to the scoreboard div
+//     //scoreDiv.append(scoreboardTable); // Appends the table to the scoreboard div
 
-}
+// }
 
-// The function below will accept a single score and its index to create the global ranking
-function appendTreatments(treatment, index) {
-    //const scoreboardTable = document.querySelector('.scoreboardTable'); // Find the table we created
-    let tableBodyRow = document.createElement('tr'); // Create the current table row
-    //tableBodyRow.className = 'scoreboardTableBodyRow';
+// // The function below will accept a single score and its index to create the global ranking
+// function appendTreatments(treatment, index) {
+//     //const scoreboardTable = document.querySelector('.scoreboardTable'); // Find the table we created
+//     let tableBodyRow = document.createElement('tr'); // Create the current table row
+//     //tableBodyRow.className = 'scoreboardTableBodyRow';
 
-    // Lines 72-85 create the 5 column cells that will be appended to the current table row
-    let treatmentIndex = document.createElement('td');
-    treatmentIndex.innerText = index;
-    let treatmentNumber = document.createElement('td');
-    treatmentNumber.innerText = treatment.treatmentNumber;
-    let treatmentInformation = document.createElement('td');
-    treatmentInformation.innerText = treatment.treatmentInformation;
-    let date = document.createElement('td');
-    date.innerText = treatment.date;
-    let workerEmail = document.createElement('td');
-    workerEmail.innerText = treatment.workerEmail;
-    let carNumber = document.createElement('td');
-    carNumber.innerText = treatment.carNumber;
-    let action = document.createElement('td');
+//     // Lines 72-85 create the 5 column cells that will be appended to the current table row
+//     let treatmentIndex = document.createElement('td');
+//     treatmentIndex.innerText = index;
+//     let treatmentNumber = document.createElement('td');
+//     treatmentNumber.innerText = treatment.treatmentNumber;
+//     let treatmentInformation = document.createElement('td');
+//     treatmentInformation.innerText = treatment.treatmentInformation;
+//     let date = document.createElement('td');
+//     date.innerText = treatment.date;
+//     let workerEmail = document.createElement('td');
+//     workerEmail.innerText = treatment.workerEmail;
+//     let carNumber = document.createElement('td');
+//     carNumber.innerText = treatment.carNumber;
+//     let action = document.createElement('td');
 
-    let edit = document.createElement('button');
-    edit.innerText = "Edit";
-    let remove = document.createElement('button');
-    remove.innerText = "Remove";
-    action.append(edit, remove);
+//     let edit = document.createElement('button');
+//     edit.innerText = "Edit";
+//     let remove = document.createElement('button');
+//     remove.innerText = "Remove";
+//     action.append(edit, remove);
 
 
-    tableBodyRow.append(treatmentIndex, treatmentNumber, treatmentInformation, date, workerEmail, carNumber, action); // Append all 5 cells to the table row
-    table.append(tableBodyRow);// Append the current row to the scoreboard table body
-};
+//     tableBodyRow.append(treatmentIndex, treatmentNumber, treatmentInformation, date, workerEmail, carNumber, action); // Append all 5 cells to the table row
+//     table.append(tableBodyRow);// Append the current row to the scoreboard table body
+// };
 
 // const getTreatments = () => {
 //     fetch('/tables') // Fetch for all scores. The response is an array of objects that is sorted in decreasing order
@@ -109,26 +115,41 @@ function validateCarNumber(carNumber) {
 
 
 function addNewTreatment() {
-    var treatmentInfo = document.getElementById("treatmentInfo").value;
-    var date = document.getElementById("date").value;
-    var workerEmail = document.getElementById("workerEmail").value;
-    var carNumber = document.getElementById("carNumber").value;
-    const emailValidation = validateEmail(workerEmail);
-    const carNumberValidation = validateCarNumber(carNumber);
-
-    if (treatmentInfo == "") alert("Treatment information field can't be empty!")
-    else if (date == "") alert("You must enter treatment date");
-    else if (!emailValidation) alert("Email field should match the format: aaa@bbb.ccc");
-    else if (!carNumberValidation) alert("Car number must be 5-8 digits number");
-    else {
-        console.log("1");
-        fetchDataToServer(treatmentInfo, date, workerEmail, carNumber);
+    var treatmentInfo = document.getElementById("new_treatmentInfo").value;
+    var date = document.getElementById("new_date").value;
+    var workerEmail = document.getElementById("new_workerEmail").value;
+    var carNumber = document.getElementById("new_carNumber").value;
+    
+    if(validation(treatmentInfo, date, workerEmail, carNumber)) {
+        fetchDataToServer("", treatmentInfo, date, workerEmail, carNumber, '/addTreatment');
     }
 }
 
-async function fetchDataToServer(treatmentInfo, date, workerEmail, carNumber) {
-    const data = { treatmentInfo: treatmentInfo, date: date, workerEmail: workerEmail, carNumber: carNumber };
-    const url = '/addTreatment';
+function validation(treatmentInfo, date, workerEmail, carNumber) {
+    const emailValidation = validateEmail(workerEmail);
+    const carNumberValidation = validateCarNumber(carNumber);
+
+    if (treatmentInfo == undefined || treatmentInfo == "") {
+         alert("Treatment information field can't be empty!");
+         return false;
+    }
+    else if (date == undefined || date == "") {
+        alert("You must enter treatment date");
+        return false;
+    } 
+    else if (!emailValidation) {
+        alert("Email field should match the format: aaa@bbb.ccc");
+        return false;
+    } 
+    else if (!carNumberValidation) {
+        alert("Car number must be 5-8 digits number");
+        return false;
+    }
+    return true;
+}
+
+async function fetchDataToServer(treatmentID, treatmentInfo, date, workerEmail, carNumber, url) {   
+    const data = { treatmentID: treatmentID, treatmentInfo: treatmentInfo, treatmentDate: date.toString().slice(0,24), workerEmail: workerEmail, carNumber: carNumber };
     const options = {
         method: 'POST',
         headers: {
@@ -147,22 +168,65 @@ async function fetchDataToServer(treatmentInfo, date, workerEmail, carNumber) {
         });
 }
 
-// function edit_row(no) {
-//     document.getElementById("edit_button" + no).style.display = "none";
-//     document.getElementById("save_button" + no).style.display = "block";
+function editRow(idStr) {
+    document.getElementById("edit_button" + idStr).style.display = "none";
+    document.getElementById("remove_button" + idStr).style.display = "none";
+    document.getElementById("save_button" + idStr).style.display = "inline";
+    document.getElementById("cancel_button" + idStr).style.display = "inline";
 
-//     var name = document.getElementById("name_row" + no);
-//     var country = document.getElementById("country_row" + no);
-//     var age = document.getElementById("age_row" + no);
+    var treatmentInfo = document.getElementById("treatmentInfo" + idStr);
+    var treatmentDate = document.getElementById("treatmentDate" + idStr);
+    var workerEmail = document.getElementById("workerEmail" + idStr);
+    var carNumber = document.getElementById("carNumber" + idStr);
 
-//     var name_data = name.innerHTML;
-//     var country_data = country.innerHTML;
-//     var age_data = age.innerHTML;
+    treatmentInfo_InnerHTML = treatmentInfo.innerHTML;
+    treatmentDate_InnerHTML = treatmentDate.innerHTML;
+    workerEmail_InnerHTML = workerEmail.innerHTML;
+    carNumber_InnerHTML = carNumber.innerHTML;
 
-//     name.innerHTML = "<input type='text' id='name_text" + no + "' value='" + name_data + "'>";
-//     country.innerHTML = "<input type='text' id='country_text" + no + "' value='" + country_data + "'>";
-//     age.innerHTML = "<input type='text' id='age_text" + no + "' value='" + age_data + "'>";
-// }
+    var treatmentInfo_data = treatmentInfo.innerText;
+    var treatmentDate_data = treatmentDate.innerText;
+    var workerEmail_data = workerEmail.innerText;
+    var carNumber_data = carNumber.innerText;
+
+    treatmentInfo.innerHTML = "<input type='text' id='treatmentInfo_text" + idStr + "' value='" + treatmentInfo_data + "' class='form-control form-control-user'>";
+    treatmentDate.innerHTML = "<input type='text' id='treatmentDate_text" + idStr + "' value='" + treatmentDate_data + "' class='form-control form-control-user'>";
+    workerEmail.innerHTML = "<input type='text' id='workerEmail_text" + idStr + "' value='" + workerEmail_data + "' class='form-control form-control-user'>";
+    carNumber.innerHTML = "<input type='text' id='carNumber_text" + idStr + "' value='" + carNumber_data + "' class='form-control form-control-user'>";
+
+}
+
+async function saveRow(idStr) {
+    var treatmentInfo = document.getElementById("treatmentInfo_text" + idStr).value;
+    var treatmentDate = document.getElementById("treatmentDate_text" + idStr).value;
+    var workerEmail = document.getElementById("workerEmail_text" + idStr).value;
+    var carNumber = document.getElementById("carNumber_text" + idStr).value;
+
+    if(validation(treatmentInfo, treatmentDate, workerEmail, carNumber)) {
+        fetchDataToServer(idStr, treatmentInfo, treatmentDate, workerEmail, carNumber, '/editTreatment');
+    }
+}
+
+async function removeRow(idStr) {
+    const data = { treatmentID: idStr };
+    const url = '/removeTreatment';
+    const options = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    }
+    await fetch(url, options)
+        .then(response => {
+            if (response.redirected) {
+                window.location.href = response.url;
+            }
+        })
+        .catch(function (err) {
+            console.info(err + " url: " + url);
+        });
+}
 
 // function save_row(no) {
 //     var name_val = document.getElementById("name_text" + no).value;
@@ -177,20 +241,15 @@ async function fetchDataToServer(treatmentInfo, date, workerEmail, carNumber) {
 //     document.getElementById("save_button" + no).style.display = "none";
 // }
 
-// function delete_row(no) {
-//     document.getElementById("row" + no + "").outerHTML = "";
-// }
+function cancelEdit(idStr) {
+    document.getElementById("treatmentInfo" + idStr).innerHTML = treatmentInfo_InnerHTML;
+    document.getElementById("treatmentDate" + idStr).innerHTML = treatmentDate_InnerHTML;
+    document.getElementById("workerEmail" + idStr).innerHTML = workerEmail_InnerHTML;
+    document.getElementById("carNumber" + idStr).innerHTML = carNumber_InnerHTML;
 
-// function add_row() {
-//     var new_name = document.getElementById("new_name").value;
-//     var new_country = document.getElementById("new_country").value;
-//     var new_age = document.getElementById("new_age").value;
+    document.getElementById("edit_button" + idStr).style.display = "inline";
+    document.getElementById("remove_button" + idStr).style.display = "inline";
+    document.getElementById("save_button" + idStr).style.display = "none";
+    document.getElementById("cancel_button" + idStr).style.display = "none";
+}
 
-//     var table = document.getElementById("data_table");
-//     var table_len = (table.rows.length) - 1;
-//     var row = table.insertRow(table_len).outerHTML = "<tr id='row" + table_len + "'><td id='name_row" + table_len + "'>" + new_name + "</td><td id='country_row" + table_len + "'>" + new_country + "</td><td id='age_row" + table_len + "'>" + new_age + "</td><td><input type='button' id='edit_button" + table_len + "' value='Edit' class='edit' onclick='edit_row(" + table_len + ")'> <input type='button' id='save_button" + table_len + "' value='Save' class='save' onclick='save_row(" + table_len + ")'> <input type='button' value='Delete' class='delete' onclick='delete_row(" + table_len + ")'></td></tr>";
-
-//     document.getElementById("new_name").value = "";
-//     document.getElementById("new_country").value = "";
-//     document.getElementById("new_age").value = "";
-// }

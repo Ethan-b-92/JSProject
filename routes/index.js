@@ -33,19 +33,16 @@ router.get('/about-us', checkAuthenticated, (req, res) => {
 
 router.get("/tables", checkAuthenticated, (req, res) => {
   const user = req.user;
-  var treatmentsArr = Treatment.find({ userId: user._id });
-  console.log(treatmentsArr);
   Treatment.find({ userId: user._id }, (err, treatments) => {
     res.render("tables.ejs", {
-      //name: req.user.firstName,
+      name: req.user.firstName,
       treatmentList: treatments,
     });
   });
 });
 
-router.get("*", (req, res)=>
- {
-   res.render('404');
+router.get("*", (req, res) => {
+  res.render('404');
 });
 
 router.post("/register", async (req, res) => {
@@ -134,15 +131,15 @@ router.post("/logout", (req, res, next) => {
   });
 });
 
-router.post("/addTreatment", checkAuthenticated, (req, res) => {
-  const { treatmentInfo, treatmentDate, workerEmail, carNumber } = req.body;
+router.post("/addTreatment", (req, res) => {
+  const { treatmentID, treatmentInfo, treatmentDate, workerEmail, carNumber } = req.body;
   const user = req.user;
   var id = generatorNumber.generate(4);
 
   const treatment = new Treatment({
     treatmentNumber: id,
     treatmentInfo: treatmentInfo,
-    treatmentDate: treatmentDate,
+    treatmentDate: treatmentDate.replace('T', ' '),
     workerEmail: workerEmail,
     carNumber: carNumber,
     userId: user._id,
@@ -154,6 +151,29 @@ router.post("/addTreatment", checkAuthenticated, (req, res) => {
     })
     .catch(err => {
       console.log(err)
+    });
+});
+
+router.post("/removeTreatment", (req, res) => {
+  const id = req.body.treatmentID;
+  Treatment.findByIdAndDelete(id)
+    .then(() => {
+      res.redirect('/tables');
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+});
+
+router.post("/editTreatment", (req, res) => {
+  const { treatmentID, treatmentInfo, treatmentDate, workerEmail, carNumber } = req.body;
+  const data = { treatmentInfo: treatmentInfo, treatmentDate: treatmentDate, workerEmail: workerEmail, carNumber: carNumber };
+  Treatment.findByIdAndUpdate(treatmentID, data, { useFindAndModify: false })
+    .then(() => {
+      res.redirect('/tables');
+    })
+    .catch((err) => {
+      console.log(err);
     });
 });
 
