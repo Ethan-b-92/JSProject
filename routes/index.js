@@ -21,8 +21,8 @@ router.get("/register", (req, res) => {
   res.render("register.ejs")
 });
 
-router.get("/forget-password", (req, res) => {
-  res.render("forget-password.html")
+router.get("/forgot-password", (req, res) => {
+  res.render("forgot-password.ejs")
 });
 
 router.get('/about-us', checkAuthenticated, (req, res) => {
@@ -42,7 +42,7 @@ router.get("/tables", checkAuthenticated, (req, res) => {
 });
 
 router.get("*", (req, res) => {
-  res.render('404');
+  res.render('404.ejs');
 });
 
 router.post("/register", async (req, res) => {
@@ -99,8 +99,8 @@ router.post("/register", async (req, res) => {
 });
 
 router.post('/login', async (req, res, next) => {
-  //var secret_key = "6Lc37tYjAAAAAIvA_p5mO6RbN-8Y0q2f6YNb2A6X"; // real secret key
-  var secret_key = "6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe"; //test recaptcha secret key
+  var secret_key = "6Lc37tYjAAAAAIvA_p5mO6RbN-8Y0q2f6YNb2A6X"; // real secret key
+  // var secret_key = "6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe"; //test recaptcha secret key
   var url = "https://www.google.com/recaptcha/api/siteverify?secret=" + secret_key + "&response=" + req.body.captcha + "&remoteip=" + req.connection.remoteAddress;
 
   request(url, (error, response, body) => {
@@ -118,7 +118,7 @@ router.post('/login', async (req, res, next) => {
         successRedirect: '/tables',
         failureRedirect: '/login',
         failureFlash: true,
-        rememberMe: false
+        rememberMe: true
       })(req, res, next);
       //return res.json({ "success": true, "msg": "captcha passed" });
     }
@@ -249,7 +249,7 @@ router.post('/forgot-password', (req, res) => {
             status: 'success',
             msg: 'The new password is in your email'
           });
-          res.redirect('/login');
+          //res.redirect('/login');
         }
         catch (e) {
           console.log(e);
