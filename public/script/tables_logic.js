@@ -119,8 +119,8 @@ function addNewTreatment() {
     var date = document.getElementById("new_date").value;
     var workerEmail = document.getElementById("new_workerEmail").value;
     var carNumber = document.getElementById("new_carNumber").value;
-    
-    if(validation(treatmentInfo, date, workerEmail, carNumber)) {
+
+    if (validation(treatmentInfo, date, workerEmail, carNumber)) {
         fetchDataToServer("", treatmentInfo, date, workerEmail, carNumber, '/addTreatment');
     }
 }
@@ -130,17 +130,17 @@ function validation(treatmentInfo, date, workerEmail, carNumber) {
     const carNumberValidation = validateCarNumber(carNumber);
 
     if (treatmentInfo == undefined || treatmentInfo == "") {
-         alert("Treatment information field can't be empty!");
-         return false;
+        alert("Treatment information field can't be empty!");
+        return false;
     }
     else if (date == undefined || date == "") {
         alert("You must enter treatment date");
         return false;
-    } 
+    }
     else if (!emailValidation) {
         alert("Email field should match the format: aaa@bbb.ccc");
         return false;
-    } 
+    }
     else if (!carNumberValidation) {
         alert("Car number must be 5-8 digits number");
         return false;
@@ -148,8 +148,8 @@ function validation(treatmentInfo, date, workerEmail, carNumber) {
     return true;
 }
 
-async function fetchDataToServer(treatmentID, treatmentInfo, date, workerEmail, carNumber, url) {   
-    const data = { treatmentID: treatmentID, treatmentInfo: treatmentInfo, treatmentDate: date.toString().slice(0,24), workerEmail: workerEmail, carNumber: carNumber };
+async function fetchDataToServer(treatmentID, treatmentInfo, date, workerEmail, carNumber, url) {
+    const data = { treatmentID: treatmentID, treatmentInfo: treatmentInfo, treatmentDate: date.toString().slice(0, 24), workerEmail: workerEmail, carNumber: carNumber };
     const options = {
         method: 'POST',
         headers: {
@@ -157,15 +157,19 @@ async function fetchDataToServer(treatmentID, treatmentInfo, date, workerEmail, 
         },
         body: JSON.stringify(data)
     }
-    await fetch(url, options)
-        .then(response => {
-            if (response.redirected) {
-                window.location.href = response.url;
-            }
-        })
-        .catch(function (err) {
-            console.info(err + " url: " + url);
-        });
+    try {
+        await fetch(url, options)
+            .then(response => {
+                if (response.redirected) {
+                    window.location.href = response.url;
+                }
+            })
+            .catch(function (err) {
+                console.info(err + " url: " + url);
+            });
+    } catch (e) {
+        alert("Oops, our bad. Please refresh the page and try again later.");
+    }
 }
 
 function editRow(idStr) {
@@ -202,7 +206,7 @@ async function saveRow(idStr) {
     var workerEmail = document.getElementById("workerEmail_text" + idStr).value;
     var carNumber = document.getElementById("carNumber_text" + idStr).value;
 
-    if(validation(treatmentInfo, treatmentDate, workerEmail, carNumber)) {
+    if (validation(treatmentInfo, treatmentDate, workerEmail, carNumber)) {
         fetchDataToServer(idStr, treatmentInfo, treatmentDate, workerEmail, carNumber, '/editTreatment');
     }
 }
@@ -217,15 +221,19 @@ async function removeRow(idStr) {
         },
         body: JSON.stringify(data)
     }
-    await fetch(url, options)
-        .then(response => {
-            if (response.redirected) {
-                window.location.href = response.url;
-            }
-        })
-        .catch(function (err) {
-            console.info(err + " url: " + url);
-        });
+    try {
+        await fetch(url, options)
+            .then(response => {
+                if (response.redirected) {
+                    window.location.href = response.url;
+                }
+            })
+            .catch(function (err) {
+                console.info(err + " url: " + url);
+            });
+    } catch (e) {
+        alert("Oops, our bad. Please refresh the page and try again later.");
+    }
 }
 
 // function save_row(no) {

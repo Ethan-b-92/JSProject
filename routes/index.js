@@ -22,7 +22,7 @@ router.get("/register", (req, res) => {
 });
 
 router.get("/forget-password", (req, res) => {
-  res.render("forget-password.html")
+  res.render("forget-password.ejs")
 });
 
 router.get('/about-us', checkAuthenticated, (req, res) => {
