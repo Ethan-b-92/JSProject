@@ -187,7 +187,7 @@ const mail_password = "clientserver2023";
 
 async function sendEmail(email, text) {
   try {
-    const transporter = nodemailer.createTransport({
+    const transporter = await nodemailer.createTransport({
       service: "outlook",
       host: 'smtp.office365.com',
       port: 587,
@@ -211,7 +211,7 @@ async function sendEmail(email, text) {
   }
 };
 
-router.post('/forgot-password', (req, res) => {
+router.post('/forgot-password', async (req, res) => {
   const email = req.body.email;
   User.findOne({ email: email })
     .then(user => {
