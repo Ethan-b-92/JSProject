@@ -22,7 +22,7 @@ router.get("/register", (req, res) => {
 });
 
 router.get("/forget-password", (req, res) => {
-  res.render("forget-password.ejs")
+  res.render("forget-password.html")
 });
 
 router.get('/about-us', checkAuthenticated, (req, res) => {
@@ -49,7 +49,7 @@ router.post("/register", async (req, res) => {
   const { firstName, lastName, email, password, recaptcha } = req.body;
   var secret_key = "6Lc37tYjAAAAAIvA_p5mO6RbN-8Y0q2f6YNb2A6X"; // real secret key
   //var secret_key = "6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe"; //test recaptcha secret key
-  var url = "https://www.google.com/recaptcha/api/siteverify?secret=" + secret_key + "&response=" + recaptcha + "&remoteip=" + req.connection.remoteAddress;
+  var url = "https://www.google.com/recaptcha/api/siteverify?secret=" + secret_key + "&response=" + req.body.captcha + "&remoteip=" + req.connection.remoteAddress;
 
   request(url, (error, response, body) => {
     body = JSON.parse(body);
@@ -99,8 +99,8 @@ router.post("/register", async (req, res) => {
 });
 
 router.post('/login', async (req, res, next) => {
-  var secret_key = "6Lc37tYjAAAAAIvA_p5mO6RbN-8Y0q2f6YNb2A6X"; // real secret key
-  //var secret_key = "6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe"; //test recaptcha secret key
+  //var secret_key = "6Lc37tYjAAAAAIvA_p5mO6RbN-8Y0q2f6YNb2A6X"; // real secret key
+  var secret_key = "6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe"; //test recaptcha secret key
   var url = "https://www.google.com/recaptcha/api/siteverify?secret=" + secret_key + "&response=" + req.body.captcha + "&remoteip=" + req.connection.remoteAddress;
 
   request(url, (error, response, body) => {
@@ -117,7 +117,8 @@ router.post('/login', async (req, res, next) => {
       passport.authenticate('local', {
         successRedirect: '/tables',
         failureRedirect: '/login',
-        failureFlash: true
+        failureFlash: true,
+        rememberMe: false
       })(req, res, next);
       //return res.json({ "success": true, "msg": "captcha passed" });
     }
@@ -181,18 +182,21 @@ router.post("/editTreatment", (req, res) => {
 // sending email to forger-password page
 var generator = require('generate-password');
 const nodemailer = require("nodemailer");
-const mail_username = "car_maintanance_buddy@yahoo.com";
+const mail_username = "car-maintenance-buddy@outlook.com";
 const mail_password = "clientserver2023";
 
 async function sendEmail(email, text) {
   try {
     const transporter = nodemailer.createTransport({
-      service: "Yahoo",
+      service: "outlook",
+      host: 'smtp.office365.com',
+      port: 587,
       auth: {
         user: mail_username,
         pass: mail_password,
       },
       secure: false,
+      logger: true
     });
     await transporter.sendMail({
       from: mail_username,
@@ -218,12 +222,22 @@ router.post('/forgot-password', (req, res) => {
           symbols: '!@#$%^&*()-_=+\\[]{};:/?/><',//! @ # \$ % ^ & * ( ) - _ = + \ | [ ] { } ; : / ? . > \<
           lowercase: true,
           uppercase: true,
-          strict: true,
+          //strict: true
         });
 
         //encrypt password
+        var salt = bcrypt.genSaltSync(10);
+        var hash = bcrypt.hashSync(new_password, salt);
 
-        User.updateOne({ userId: user._id }, { password: new_password });
+        //update new password
+        User.updateOne({ _id: user._id }, { password: hash }, function (err, docs) {
+          if (err) {
+            console.log(err)
+          }
+          else {
+            console.log("Updated Docs : ", docs);
+          }
+        });
         console.log('user password has been reset! new password:' + new_password);
 
         const text = `Hi ${user.firstName}!\n\
@@ -235,6 +249,7 @@ router.post('/forgot-password', (req, res) => {
             status: 'success',
             msg: 'The new password is in your email'
           });
+          res.redirect('/login');
         }
         catch (e) {
           console.log(e);
@@ -243,8 +258,6 @@ router.post('/forgot-password', (req, res) => {
             msg: 'failed to send email'
           });
         }
-
-        // TODO STAV *************************************************
       }
       else {
         //req.flash('error_msg', 'Unknown email');
