@@ -188,7 +188,7 @@ const sendgridTransport = require('nodemailer-sendgrid-transport');
 async function sendEmail(email, text) {
   const transport = nodemailer.createTransport(sendgridTransport({
     auth: {
-      api_key: process.env.api_key
+      api_key: process.env.API_KEY
     }
   }))
   transport.sendMail({
@@ -203,8 +203,8 @@ async function sendEmail(email, text) {
   //     host: 'smtp.office365.com',
   //     port: 587,
   //     auth: {
-  //       user: process.env.mail_user,
-  //       pass: mprocess.env.mail_password
+  //       user: process.env.MAIL_USER,
+  //       pass: process.env.MAIL_PASSWORD
   //     },
   //     secure: false,
   //     logger: false
@@ -226,7 +226,7 @@ async function sendEmail(email, text) {
   //   const mailData = {
   //     from: {
   //       name: 'Car Maintenance Buddy',
-  //       address: process.env.mail_user,
+  //       address: process.env.MAIL_USER,
   //     },
   //     replyTo: email,
   //     to: email,
@@ -249,7 +249,7 @@ async function sendEmail(email, text) {
   //   });
 
     // transporter.sendMail({
-    //   from: '"Car Maintenance Buddy" <' + process.env.mail_user + '>',
+    //   from: '"Car Maintenance Buddy" <' + process.env.MAIL_USER + '>',
     //   to: email,
     //   subject: `Your Password in Car Maintenace Buddy website`,
     //   text: text,
