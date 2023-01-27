@@ -183,6 +183,7 @@ router.post("/editTreatment", (req, res) => {
 const dotenv = require("dotenv");
 var generator = require('generate-password');
 const nodemailer = require("nodemailer");
+const { emit } = require("../models/userScheme.js");
 dotenv.config();
 const mail_username = "car-maintenance-buddy@outlook.com";
 const mail_password = "clientserver2023";
@@ -191,39 +192,61 @@ async function sendEmail(email, text) {
   try {
     const transporter = await nodemailer.createTransport({
       service: "outlook",
-      //host: 'smtp.office365.com',
-      host: 'smtp-mail.outlook.com',
+      host: 'smtp.office365.com',
       port: 587,
       auth: {
         user: mail_username,
         pass: mail_password
       },
-      tls: {
-        ciphers: 'SSLv3'
-      },
-      secureConnection: false,
+      secure: false,
       logger: false
     });
-    // setup e-mail data, even with unicode symbols
-    var mailOptions = {
-      from: '"Car Maintenance Buddy" <car-maintenance-buddy@outlook.com>', // sender address (who sends)
-      to: email, // list of receivers (who receives)
-      subject: 'Hello ', // Subject line
-      text: 'Hello world ', // plaintext body
-      html: '<b>Hello world </b><br> This is the first email sent with Nodemailer in Node.js' // html body
+
+    await new Promise((resolve, reject) => {
+      // verify connection configuration
+      transporter.verify(function (error, success) {
+        if (error) {
+          console.log(error);
+          reject(error);
+        } else {
+          console.log("Server is ready to take our messages");
+          resolve(success);
+        }
+      });
+    });
+
+    const mailData = {
+      from: {
+        name: 'Car Maintenance Buddy',
+        address: mail_username,
+      },
+      replyTo: email,
+      to: email,
+      subject: `form message`,
+      text: text,
+      html: `${text}`,
     };
+
+    await new Promise((resolve, reject) => {
+      // send mail
+      transporter.sendMail(mailData, (err, info) => {
+        if (err) {
+          console.error(err);
+          reject(err);
+        } else {
+          console.log(info);
+          resolve(info);
+        }
+      });
+    });
+
     // transporter.sendMail({
-    //   from: mail_username,
+    //   from: '"Car Maintenance Buddy" <' + mail_username + '>',
     //   to: email,
     //   subject: `Your Password in Car Maintenace Buddy website`,
     //   text: text,
+    //   html: '<b>Hello world </b><br> This is the first email sent with Nodemailer in Node.js' // html body
     // });
-    // send mail with defined transport object
-    transporter.sendMail(mailOptions, function (error, info) {
-      if (error) {
-        return console.log(error);
-      }
-    });
     console.log("email sent sucessfully");
     return true;
   }
