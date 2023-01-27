@@ -205,9 +205,11 @@ async function sendEmail(email, text) {
       text: text,
     });
     console.log("email sent sucessfully");
+    return true;
   }
   catch (error) {
     console.log(error, "email not sent");
+    return false;
   }
 };
 
@@ -244,12 +246,16 @@ router.post('/forgot-password', async (req, res) => {
                             We heard that you forgot your password to our site...\n\
                             This is your new password: ${new_password}`;
         try {
-          sendEmail(email, text);
-          res.json({
-            status: 'success',
-            msg: 'The new password is in your email'
-          });
-          //res.redirect('/login');
+          if (sendEmail(email, text)) {
+            res.json({
+              status: 'success',
+              msg: 'The new password is in your email'
+            });
+            //res.redirect('/login');
+          }
+          else {
+            throw new Error;
+          }
         }
         catch (e) {
           console.log(e);
@@ -265,9 +271,9 @@ router.post('/forgot-password', async (req, res) => {
           status: 'error',
           msg: 'Unknown email'
         });
-        res.render('forgot-password', {
-          email: email
-        });
+        // res.render('forgot-password', {
+        //   email: email
+        // });
       }
     });
 });
