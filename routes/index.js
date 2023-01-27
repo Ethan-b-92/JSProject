@@ -184,8 +184,6 @@ var generator = require('generate-password');
 const nodemailer = require("nodemailer");
 const { emit } = require("../models/userScheme.js");
 const sendgridTransport = require('nodemailer-sendgrid-transport');
-const mail_username = "car-maintenance-buddy@outlook.com";
-const mail_password = "clientserver2023";
 
 async function sendEmail(email, text) {
   const transport = nodemailer.createTransport(sendgridTransport({
@@ -205,8 +203,8 @@ async function sendEmail(email, text) {
   //     host: 'smtp.office365.com',
   //     port: 587,
   //     auth: {
-  //       user: mail_username,
-  //       pass: mail_password
+  //       user: process.env.mail_user,
+  //       pass: mprocess.env.mail_password
   //     },
   //     secure: false,
   //     logger: false
@@ -228,7 +226,7 @@ async function sendEmail(email, text) {
   //   const mailData = {
   //     from: {
   //       name: 'Car Maintenance Buddy',
-  //       address: mail_username,
+  //       address: process.env.mail_user,
   //     },
   //     replyTo: email,
   //     to: email,
@@ -251,7 +249,7 @@ async function sendEmail(email, text) {
   //   });
 
     // transporter.sendMail({
-    //   from: '"Car Maintenance Buddy" <' + mail_username + '>',
+    //   from: '"Car Maintenance Buddy" <' + process.env.mail_user + '>',
     //   to: email,
     //   subject: `Your Password in Car Maintenace Buddy website`,
     //   text: text,
