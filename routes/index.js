@@ -195,8 +195,8 @@ async function sendEmail(email, text) {
         user: mail_username,
         pass: mail_password,
       },
-      secure: false,
-      logger: true
+      //secure: false,
+      logger: false
     });
     await transporter.sendMail({
       from: mail_username,
