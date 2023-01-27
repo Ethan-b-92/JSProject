@@ -6,6 +6,7 @@ const flash = require('express-flash');
 const passport = require("passport");
 var path = require('path');
 const request = require('request');
+require('dotenv').config();
 
 var app = express();
 
@@ -54,6 +55,7 @@ app.use("/", require("./routes/index"));
 module.exports = app;
 
 const PORT = 8012;
+
 
 app.listen(PORT, () => {
    console.log('Server is listening to port ' + PORT)

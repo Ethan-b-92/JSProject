@@ -190,7 +190,7 @@ const mail_password = "clientserver2023";
 async function sendEmail(email, text) {
   const transport = nodemailer.createTransport(sendgridTransport({
     auth: {
-      api_key: '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'
+      api_key: process.env.api_key
     }
   }))
   transport.sendMail({
