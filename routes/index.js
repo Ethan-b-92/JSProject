@@ -189,8 +189,8 @@ async function sendEmail(email, text) {
   try {
     const transporter = await nodemailer.createTransport({
       service: "outlook",
-      host: 'smtp.office365.com',
-      port: 587,
+      //host: 'smtp.office365.com',
+      //port: 587,
       auth: {
         user: mail_username,
         pass: mail_password,
