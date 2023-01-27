@@ -180,8 +180,10 @@ router.post("/editTreatment", (req, res) => {
 
 
 // sending email to forger-password page
+const dotenv = require("dotenv");
 var generator = require('generate-password');
 const nodemailer = require("nodemailer");
+dotenv.config();
 const mail_username = "car-maintenance-buddy@outlook.com";
 const mail_password = "clientserver2023";
 
@@ -190,12 +192,16 @@ async function sendEmail(email, text) {
     const transporter = await nodemailer.createTransport({
       service: "outlook",
       //host: 'smtp.office365.com',
-      //port: 587,
+      host: 'smtp-mail.outlook.com',
+      port: 587,
       auth: {
         user: mail_username,
-        pass: mail_password,
+        pass: mail_password
       },
-      //secure: false,
+      tls: {
+        ciphers: 'SSLv3'
+      },
+      secureConnection: false,
       logger: false
     });
     await transporter.sendMail({
@@ -233,8 +239,6 @@ router.post('/forgot-password', async (req, res) => {
             uppercase: true,
           });
         } while (!validatePassword(new_password));
-
-        console.log(new_password);
 
         //encrypt password
         var salt = bcrypt.genSaltSync(10);
