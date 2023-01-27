@@ -204,11 +204,25 @@ async function sendEmail(email, text) {
       secureConnection: false,
       logger: false
     });
-    await transporter.sendMail({
-      from: mail_username,
-      to: email,
-      subject: `Your Password in Car Maintenace Buddy website`,
-      text: text,
+    // setup e-mail data, even with unicode symbols
+    var mailOptions = {
+      from: '"Car Maintenance Buddy" <car-maintenance-buddy@outlook.com>', // sender address (who sends)
+      to: email, // list of receivers (who receives)
+      subject: 'Hello ', // Subject line
+      text: 'Hello world ', // plaintext body
+      html: '<b>Hello world </b><br> This is the first email sent with Nodemailer in Node.js' // html body
+    };
+    // transporter.sendMail({
+    //   from: mail_username,
+    //   to: email,
+    //   subject: `Your Password in Car Maintenace Buddy website`,
+    //   text: text,
+    // });
+    // send mail with defined transport object
+    transporter.sendMail(mailOptions, function (error, info) {
+      if (error) {
+        return console.log(error);
+      }
     });
     console.log("email sent sucessfully");
     return true;
@@ -258,25 +272,25 @@ router.post('/forgot-password', async (req, res) => {
         const text = `Hi ${user.firstName}!\n\
                             We heard that you forgot your password to our site...\n\
                             This is your new password: ${new_password}`;
-          try {
-            if (sendEmail(email, text)) {
-              res.json({
-                status: 'success',
-                msg: 'The new password is in your email'
-              });
-              //res.redirect('/login');
-            }
-            else {
-              throw new Error;
-            }
-          }
-          catch (e) {
-            console.log(e);
+        try {
+          if (sendEmail(email, text)) {
             res.json({
-              status: 'error',
-              msg: 'failed to send email'
+              status: 'success',
+              msg: 'The new password is in your email'
             });
+            //res.redirect('/login');
           }
+          else {
+            throw new Error;
+          }
+        }
+        catch (e) {
+          console.log(e);
+          res.json({
+            status: 'error',
+            msg: 'failed to send email'
+          });
+        }
       }
       else {
         //req.flash('error_msg', 'Unknown email');
