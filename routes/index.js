@@ -213,19 +213,28 @@ async function sendEmail(email, text) {
   }
 };
 
+function validatePassword(password) {
+  var passwordRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9])(?=.{6,})");
+  return passwordRegex.test(password);
+}
+
 router.post('/forgot-password', async (req, res) => {
   const email = req.body.email;
   User.findOne({ email: email })
     .then(user => {
+      let new_password;
       if (user) {
-        const new_password = generator.generate({
-          length: 8,
-          numbers: true,
-          symbols: '!@#$%^&*()-_=+\\[]{};:/?/><',//! @ # \$ % ^ & * ( ) - _ = + \ | [ ] { } ; : / ? . > \<
-          lowercase: true,
-          uppercase: true,
-          //strict: true
-        });
+        do {
+          new_password = generator.generate({
+            length: 8,
+            numbers: true,
+            symbols: '!@#$%^&*()-_=+\\[]{};:/?/><',//! @ # \$ % ^ & * ( ) - _ = + \ | [ ] { } ; : / ? . > \<
+            lowercase: true,
+            uppercase: true,
+          });
+        } while (!validatePassword(new_password));
+
+        console.log(new_password);
 
         //encrypt password
         var salt = bcrypt.genSaltSync(10);
@@ -245,25 +254,25 @@ router.post('/forgot-password', async (req, res) => {
         const text = `Hi ${user.firstName}!\n\
                             We heard that you forgot your password to our site...\n\
                             This is your new password: ${new_password}`;
-        try {
-          if (sendEmail(email, text)) {
+          try {
+            if (sendEmail(email, text)) {
+              res.json({
+                status: 'success',
+                msg: 'The new password is in your email'
+              });
+              //res.redirect('/login');
+            }
+            else {
+              throw new Error;
+            }
+          }
+          catch (e) {
+            console.log(e);
             res.json({
-              status: 'success',
-              msg: 'The new password is in your email'
+              status: 'error',
+              msg: 'failed to send email'
             });
-            //res.redirect('/login');
           }
-          else {
-            throw new Error;
-          }
-        }
-        catch (e) {
-          console.log(e);
-          res.json({
-            status: 'error',
-            msg: 'failed to send email'
-          });
-        }
       }
       else {
         //req.flash('error_msg', 'Unknown email');
