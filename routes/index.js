@@ -181,7 +181,8 @@ router.post("/editTreatment", (req, res) => {
 
 // sending email to forger-password page
 var generator = require('generate-password');
-const nodemailer = require("nodemailer");
+const { sendEmail } = require("../utils/sendEmail"); 
+/*const nodemailer = require("nodemailer");
 const { emit } = require("../models/userScheme.js");
 const sendgridTransport = require('nodemailer-sendgrid-transport');
 
@@ -256,7 +257,7 @@ async function sendEmail(email, text) {
     console.log(error, "email not sent");
     return false;
   }
-};
+};*/
 
 function validatePassword(password) {
   var passwordRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9])(?=.{6,})");
@@ -317,7 +318,7 @@ router.post('/forgot-password', async (req, res) => {
           });
         }
       }
-      else {
+      else { //user is not registered
         //req.flash('error_msg', 'Unknown email');
         res.json({
           status: 'error',
