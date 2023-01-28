@@ -186,82 +186,76 @@ const { emit } = require("../models/userScheme.js");
 const sendgridTransport = require('nodemailer-sendgrid-transport');
 
 async function sendEmail(email, text) {
-  const transport = nodemailer.createTransport(sendgridTransport({
-    auth: {
-      api_key: process.env.API_KEY
-    }
-  }))
-  transport.sendMail({
-    to: email,
-    from: "car-maintenance-buddy@outlook.com",
-    subject: `Your Password in Car Maintenace Buddy website`,
-    html: `${text}`
-  }).catch(err => console.log(err));
-  // try {
-  //   const transporter = await nodemailer.createTransport({
-  //     service: "outlook",
-  //     host: 'smtp.office365.com',
-  //     port: 587,
-  //     auth: {
-  //       user: process.env.MAIL_USER,
-  //       pass: process.env.MAIL_PASSWORD
-  //     },
-  //     secure: false,
-  //     logger: false
-  //   });
+  // using sendgrid
+  // const transport = nodemailer.createTransport(sendgridTransport({
+  //   auth: {
+  //     api_key: process.env.API_KEY
+  //   }
+  // }))
+  // transport.sendMail({
+  //   to: email,
+  //   from: "car-maintenance-buddy@outlook.com",
+  //   subject: `Your Password in Car Maintenace Buddy website`,
+  //   html: `${text}`
+  // }).catch(err => console.log(err));
+  try {
+    const transporter = await nodemailer.createTransport({
+      service: "outlook",
+      host: 'smtp.office365.com',
+      port: 587,
+      auth: {
+        user: process.env.MAIL_USER,
+        pass: process.env.MAIL_PASSWORD
+      },
+      secure: false,
+      logger: false
+    });
 
-  //   await new Promise((resolve, reject) => {
-  //     // verify connection configuration
-  //     transporter.verify(function (error, success) {
-  //       if (error) {
-  //         console.log(error);
-  //         reject(error);
-  //       } else {
-  //         console.log("Server is ready to take our messages");
-  //         resolve(success);
-  //       }
-  //     });
-  //   });
+    await new Promise((resolve, reject) => {
+      // verify connection configuration
+      transporter.verify(function (error, success) {
+        if (error) {
+          console.log(error);
+          reject(error);
+        } else {
+          console.log("Server is ready to take our messages");
+          resolve(success);
+        }
+      });
+    });
 
-  //   const mailData = {
-  //     from: {
-  //       name: 'Car Maintenance Buddy',
-  //       address: process.env.MAIL_USER,
-  //     },
-  //     replyTo: email,
-  //     to: email,
-  //     subject: `Your Password in Car Maintenace Buddy website`,
-  //     text: text,
-  //     html: `${text}`,
-  //   };
+    const mailData = {
+      from: {
+        name: 'Car Maintenance Buddy',
+        address: process.env.MAIL_USER,
+      },
+      replyTo: process.env.MAIL_USER,
+      to: email,
+      subject: `Your Password in Car Maintenace Buddy website`,
+      //text: text,
+      html: `${text}`,
+    };
 
-  //   await new Promise((resolve, reject) => {
-  //     // send mail
-  //     transporter.sendMail(mailData, (err, info) => {
-  //       if (err) {
-  //         console.error(err);
-  //         reject(err);
-  //       } else {
-  //         console.log(info);
-  //         resolve(info);
-  //       }
-  //     });
-  //   });
+    await new Promise((resolve, reject) => {
+      // send mail
+      transporter.sendMail(mailData, (err, info) => {
+        if (err) {
+          console.error(err);
+          reject(err);
+        } else {
+          console.log(info);
+          resolve(info);
+        }
+      });
+    });
 
-    // transporter.sendMail({
-    //   from: '"Car Maintenance Buddy" <' + process.env.MAIL_USER + '>',
-    //   to: email,
-    //   subject: `Your Password in Car Maintenace Buddy website`,
-    //   text: text,
-    //   html: '<b>Hello world </b><br> This is the first email sent with Nodemailer in Node.js' // html body
-    // });
-  //   console.log("email sent sucessfully");
-  //   return true;
-  // }
-  // catch (error) {
-  //   console.log(error, "email not sent");
-  //   return false;
-  // }
+    console.log("email sent sucessfully");
+    return true;
+  }
+  catch (error) {
+    console.log(error, "email not sent");
+    return false;
+  }
 };
 
 function validatePassword(password) {
