@@ -13,8 +13,8 @@ var app = express();
 const db = require('./utils/keys').MongoURI;
 
 mongoose.connect(db, { useNewUrlParser: true })
-.then(() => console.log('MongoDB Connected...'))
-.catch(err => console.log(err));
+   .then(() => console.log('MongoDB Connected...'))
+   .catch(err => console.log(err));
 
 require('./utils/passport')(passport);
 
@@ -22,7 +22,7 @@ app.all('/', function(req, res, next) {
    res.header("Access-Control-Allow-Origin", "*");
    res.header("Access-Control-Allow-Headers", "X-Requested-With");
    next()
- });
+});
 
 app.use(session({
    secret: 'secret',

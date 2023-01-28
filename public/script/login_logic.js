@@ -88,7 +88,8 @@ function submitForm(email, password) {
 
 async function fetchDataToServer(email, password) {
     var captcha = document.querySelector('#g-recaptcha-response').value;
-    const data = { email: email, password: password, captcha: captcha };
+    var rememberMe = document.getElementById("customCheck").checked;
+    const data = { email: email, password: password, captcha: captcha, rememberme: rememberMe};
     const url = '/login';
     const options = {
         method: 'POST',
