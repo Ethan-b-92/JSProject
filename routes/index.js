@@ -9,8 +9,15 @@ const { checkAuthenticated } = require("../utils/authenticat");
 const User = require("../models/userScheme.js");
 const Treatment = require("../models/treatmentScheme");
 
-router.get('/', (req, res) => {
-  res.render('login.ejs');
+
+router.get('/', checkAuthenticated, (req, res) => {
+  const user = req.user;
+  Treatment.find({ userId: user._id }, (err, treatments) => {
+    res.render("tables.ejs", {
+      name: req.user.firstName,
+      treatmentList: treatments,
+    });
+  });
 });
 
 router.get("/login", (req, res) => {
@@ -183,7 +190,6 @@ router.post("/editTreatment", (req, res) => {
 var generator = require('generate-password');
 //const { sendEmail } = require("../utils/sendEmail"); 
 const nodemailer = require("nodemailer");
-const { emit } = require("../models/userScheme.js");
 const sendgridTransport = require('nodemailer-sendgrid-transport');
 
 async function sendEmail(email, text) {
@@ -199,64 +205,6 @@ async function sendEmail(email, text) {
     subject: `Your Password in Car Maintenace Buddy website`,
     html: `${text}`
   }).catch(err => console.log(err));
-  // try {
-  //   const transporter = await nodemailer.createTransport({
-  //     service: "outlook",
-  //     host: 'smtp.office365.com',
-  //     port: 587,
-  //     auth: {
-  //       user: process.env.MAIL_USER,
-  //       pass: process.env.MAIL_PASSWORD
-  //     },
-  //     secure: false,
-  //     logger: false
-  //   });
-
-  //   await new Promise((resolve, reject) => {
-  //     // verify connection configuration
-  //     transporter.verify(function (error, success) {
-  //       if (error) {
-  //         console.log(error);
-  //         reject(error);
-  //       } else {
-  //         console.log("Server is ready to take our messages");
-  //         resolve(success);
-  //       }
-  //     });
-  //   });
-
-  //   const mailData = {
-  //     from: {
-  //       name: 'Car Maintenance Buddy',
-  //       address: process.env.MAIL_USER,
-  //     },
-  //     replyTo: process.env.MAIL_USER,
-  //     to: email,
-  //     subject: `Your Password in Car Maintenace Buddy website`,
-  //     //text: text,
-  //     html: `${text}`,
-  //   };
-
-  //   await new Promise((resolve, reject) => {
-  //     // send mail
-  //     transporter.sendMail(mailData, (err, info) => {
-  //       if (err) {
-  //         console.error(err);
-  //         reject(err);
-  //       } else {
-  //         console.log(info);
-  //         resolve(info);
-  //       }
-  //     });
-  //   });
-
-  //   console.log("email sent sucessfully");
-  //   return true;
-  // }
-  // catch (error) {
-  //   console.log(error, "email not sent");
-  //   return false;
-  // }
 };
 
 function validatePassword(password) {
