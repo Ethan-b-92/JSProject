@@ -1,39 +1,25 @@
-require("dotenv").config();
 const nodemailer = require("nodemailer");
-// User model
-//const User = require("../models/userScheme.js");
+const sendgridTransport = require('nodemailer-sendgrid-transport');
 
-const transporter = nodemailer.createTransport({
-  service: "Hotmail",
-  auth: {
-    user: process.env.MAIL_USER,
-    pass: process.env.MAIL_PASSWORD
-  },
-});
-
-// Send verification email
-const sendEmail = async (email, text, res) => {
-  // url to be used in the mail
-  //const { email } = await User.findById({ _id: task.userId });
-  // mail options
-  const mailData = {
-    from: process.env.MAIL_USER,
+async function sendEmail(email, subject, text) {
+  // using sendgrid
+  const transport = nodemailer.createTransport(sendgridTransport({
+    auth: {
+      api_key: process.env.API_KEY
+    }
+  }))
+  transport.sendMail({
     to: email,
-    subject: `Your Password in Car Maintenace Buddy website`,
-    html: `<p>${text}.</p>`,
-  };
-  //Send mail
-  transporter
-    .sendMail(mailData)
-    .then(() => {
-      console.log(`Mail sent to: ${email}`);
-      return true;
-    })
-    .catch((err) => {
-      console.log(err);
-      console.log(`Could not sent mail to: ${email}`);
-      return false;
-    });
+    from: `car-maintenance-buddy@outlook.com`,
+    subject: subject,
+    text: text
+  }).then(() => {
+    console.log("mail sent.");
+    return true;
+  }).catch(err => {
+    console.log(err);
+    return false;
+  });
 };
 
 module.exports = { sendEmail };

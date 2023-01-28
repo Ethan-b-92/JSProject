@@ -5,6 +5,8 @@ const passport = require("passport");
 const request = require('request');
 const generatorNumber = require('generate-serial-number');
 const { checkAuthenticated } = require("../utils/authenticat");
+const generator = require('generate-password');
+const { sendEmail } = require("../utils/sendEmail");
 
 const User = require("../models/userScheme.js");
 const Treatment = require("../models/treatmentScheme");
@@ -13,10 +15,7 @@ const Treatment = require("../models/treatmentScheme");
 router.get('/', checkAuthenticated, (req, res) => {
   const user = req.user;
   Treatment.find({ userId: user._id }, (err, treatments) => {
-    res.render("tables.ejs", {
-      name: req.user.firstName,
-      treatmentList: treatments,
-    });
+    res.redirect("/tables");
   });
 });
 
@@ -55,25 +54,22 @@ router.get("*", (req, res) => {
 router.post("/register", async (req, res) => {
   const { firstName, lastName, email, password, recaptcha } = req.body;
   var secret_key = "6Lc37tYjAAAAAIvA_p5mO6RbN-8Y0q2f6YNb2A6X"; // real secret key
-  //var secret_key = "6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe"; //test recaptcha secret key
+  // var secret_key = "6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe"; //test recaptcha secret key
   var url = "https://www.google.com/recaptcha/api/siteverify?secret=" + secret_key + "&response=" + req.body.captcha + "&remoteip=" + req.connection.remoteAddress;
 
-  request(url, (error, response, body) => {
+  request(url, async(error, response, body) => {
     body = JSON.parse(body);
     console.log("checking recaptcha");
     if (body.success !== undefined && !body.success) //unsuccessful
     {
       console.log("unsuccessful recaptha");
       res.redirect('/login');
-      //return res.json({ "success": false, "msg": "failed captcha verification" });
     }
     else {
       User.findOne({ email: email })
         .then((user) => {
           if (user) //already exist
           {
-            //req.flash('error_msg', 'This email already exists');
-            //res.text( 'This username already exists' );
             console.log('user exists');
             res.redirect('/register');
           }
@@ -91,8 +87,18 @@ router.post("/register", async (req, res) => {
                 newUser.password = hash;
                 newUser.save()
                   .then((user) => {
-                    //req.flash("success_msg", "You are now registered");
-                    console.log('success');
+                    console.log('user created');
+                    try {
+                      console.log("try block entered.")
+                      var subject = "Welcome to Car-Maintenance-Buddy!";
+                      var text = "Your account has been successfuly set. You may now log into your dashboard.";
+                      if (!sendEmail(email, subject, text)) {
+                        throw new Error;
+                      }
+                    }
+                    catch (e) {
+                      console.log(e);
+                    }
                     res.redirect("/login");
                   })
                   .catch((err) => console.log(err));
@@ -117,7 +123,6 @@ router.post('/login', async (req, res, next) => {
     {
       console.log("unsuccessful recaptha");
       res.redirect('/login');
-      //return res.json({ "success": false, "msg": "failed captcha verification" });
     }
     else {
       console.log("checking user");
@@ -127,7 +132,6 @@ router.post('/login', async (req, res, next) => {
         failureFlash: true,
         rememberMe: true
       })(req, res, next);
-      //return res.json({ "success": true, "msg": "captcha passed" });
     }
   });
 });
@@ -186,27 +190,7 @@ router.post("/editTreatment", (req, res) => {
 });
 
 
-// sending email to forger-password page
-var generator = require('generate-password');
-//const { sendEmail } = require("../utils/sendEmail"); 
-const nodemailer = require("nodemailer");
-const sendgridTransport = require('nodemailer-sendgrid-transport');
-
-async function sendEmail(email, text) {
-  // using sendgrid
-  const transport = nodemailer.createTransport(sendgridTransport({
-    auth: {
-      api_key: process.env.API_KEY
-    }
-  }))
-  transport.sendMail({
-    to: email,
-    from: `car-maintenance-buddy@outlook.com`,
-    subject: `Your Password in Car Maintenace Buddy website`,
-    html: `${text}`
-  }).catch(err => console.log(err));
-};
-
+// sending email to forget-password page 
 function validatePassword(password) {
   var passwordRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9])(?=.{6,})");
   return passwordRegex.test(password);
@@ -243,16 +227,16 @@ router.post('/forgot-password', async (req, res) => {
         });
         console.log('user password has been reset! new password:' + new_password);
 
+        var subject = `Your Password in Car Maintenace Buddy website`;
         const text = `Hi ${user.firstName}!\n\
                             We heard that you forgot your password to our site...\n\
                             This is your new password: ${new_password}`;
         try {
-          if (sendEmail(email, text)) {
+          if (sendEmail(email, subject, text)) {
             res.json({
               status: 'success',
               msg: 'The new password is in your email'
             });
-            //res.redirect('/login');
           }
           else {
             throw new Error;
@@ -267,14 +251,10 @@ router.post('/forgot-password', async (req, res) => {
         }
       }
       else { //user is not registered
-        //req.flash('error_msg', 'Unknown email');
         res.json({
           status: 'error',
           msg: 'Unknown email'
         });
-        // res.render('forgot-password', {
-        //   email: email
-        // });
       }
     });
 });

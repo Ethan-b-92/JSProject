@@ -2,7 +2,6 @@ const passwordRules = "Password must contain: \n1. At least one upper case lette
 2. At least one lower case letter \n3. At least one digit \n4. At least one special character\n\
 5. At least 6 characters\nSpecial characters: : ! @ # \$ % ^ & * ( ) - _ = + \ | [ ] { } ; : / ? . > \<";
 const emailRules = "Email field should match the format: aaa@bbb.ccc";
-//var modalTitle = "Something is Wrong...";
 
 var email = document.getElementById("email").value;
 var password = document.getElementById("password").value;
@@ -26,20 +25,13 @@ function validateLogIn() {
     const [emailValidation, passwordValidation] = validateEmailAndPassword();
 
     if (emailValidation && passwordValidation) {
-        //if (validateRecaptcha(email, password)) {
-            //modalTitle = "Congrats!";
-            //alert('You successfully logged into your account! \nEmail: ' + email +' \nPassword: ' + password);
-            //submitForm(email, password);
             fetchDataToServer(email, password);
-        //}
-
     }
 }
 
 function validateEmailAndPassword() {
     var emailValidation = validateEmail();
     var passwordValidation = validatePassword();
-    //modalTitle = "Something is Wrong...";
 
     if (!emailValidation)
         alert("Invalid email!\n" + emailRules);

@@ -2,7 +2,6 @@ const passwordRules = "Password must contain: \n1. At least one upper case lette
 2. At least one lower case letter \n3. At least one digit \n4. At least one special character\n\
 5. At least 6 characters\nSpecial characters: : ! @ # \$ % ^ & * ( ) - _ = + \ | [ ] { } ; : / ? . > \<";
 const emailRules = "Email field should match the format: aaa@bbb.ccc";
-// var modalTitle = "Something is Wrong...";
 
 (function () {
     var proxied = window.alert;
@@ -30,17 +29,9 @@ function validateSignUp() {
     password = document.getElementById("password").value;
     confirmPas = document.getElementById("confirm").value;
     const [emailValidation, passwordValidation, nameValidation, confirmationValidation] = validateEmailAndPassword();
-    //modalTitle = "Something is Wrong...";
 
     if (emailValidation && passwordValidation && nameValidation && confirmationValidation) {
-        //if (validateRecaptcha(email, password)) {
-            //modalTitle = "Congrats!";
-            //var successfulMessage = "You successfully signed up! \nEmail: " + email + " \nPassword: " + password;
-            //console.log("success!");
-            //alert(successfulMessage);
-            //submitForm(email, password);
             fetchDataToServer(email, password, firstName, lastName);
-        //}
     }
 }
 
@@ -49,7 +40,6 @@ function validateEmailAndPassword() {
     var passwordValidation = validatePassword();
     var nameValidation = validateName();
     var confirmationValidation = validateConfirmation();
-    //modalTitle = "Something is Wrong...";
 
     if (!emailValidation)
         alert("Invalid email!\n" + emailRules);
@@ -145,8 +135,6 @@ async function fetchDataToServer(email, password, firstName, lastName) {
         .catch(function(err) {
             console.info(err + " url: " + url);
         });
-    //const json = await response.json();
-    //console.log(json);
 }
 
 function validateRecaptcha() {
